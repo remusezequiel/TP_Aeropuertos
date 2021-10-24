@@ -5,7 +5,7 @@ navbar:
     - text: "Home"
       href: index.html
     - text: "Datos y Referencias"
-      href: referencias.md
+      href: refes.html
     - text: "Primera Parte"
       href: primera_parte.html
     - text: "Segunda Parte"
