@@ -1,0 +1,15 @@
+name: "TP - Aeropuertos"
+navbar:
+  title: "Labo de Datos"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Datos y Referencias"
+      href: referencias.html
+    - text: "Primera Parte"
+      href: primera_parte.html
+    - text: "Segunda Parte"
+      href: segunda_parte.html
+output_dir: "docs"
+
+

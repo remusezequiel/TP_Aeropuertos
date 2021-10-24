@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Grupo 8" />
+
+
+<title>Primera Parte</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Labo de Datos</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="refes.html">Datos y Referencias</a>
+</li>
+<li>
+  <a href="primera_parte.html">Primera Parte</a>
+</li>
+<li>
+  <a href="segunda.html">Segunda Parte</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Primera Parte</h1>
+<h3 class="subtitle">Laboratorio de Datos</h3>
+<h4 class="author">Grupo 8</h4>
+<h4 class="date">2020-12-01T21:13:14-05:00</h4>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#analizamos-un-poco-los-datos-del-dataset-de-anac">Analizamos un poco los datos del dataset de ANAC</a></li>
+<li><a href="#scrapeo-de-datos-de-coordenadas-de-wikipedia">Scrapeo de datos de coordenadas de wikipedia</a></li>
+<li><a href="#vinculación-de-datasets">Vinculación de datasets</a></li>
+<li><a href="#carga-del-nuevo-dataset">Carga del nuevo dataset</a></li>
+<li><a href="#calculo-de-distancias">Calculo de distancias</a></li>
+<li><a href="#calculo-de-las-velocidades-promedio">Calculo de las Velocidades promedio</a></li>
+<li><a href="#glosario-de-variables">Glosario de Variables</a></li>
+</ul>
+</div>
+
+<div id="analizamos-un-poco-los-datos-del-dataset-de-anac" class="section level2">
+<h2>Analizamos un poco los datos del dataset de ANAC</h2>
+<p>Los datos originales utilizados se encuentran en el siguiente <a href="https://datos.gob.ar/dataset/transporte-aterrizajes-despegues-procesados-por-administracion-nacional-aviacion-civil-anac">Link</a>, los cuales corresponden a los datos de <em>Aterrizajes y despegues en el año 2021</em> procesados por <em>ANAC</em>.</p>
+<p>Leamos y analisemos que tiene este <code>csv</code>.</p>
+<pre class="r"><code># datos.ANAC := datos del csv original de aterrizajes y vuelos
+datos.ANAC &lt;- read.csv(&#39;202109-informe-ministerio.csv&#39;, sep=&#39;;&#39;, encoding = &#39;utf-8&#39;)
+# datos.ANAC
+colnames(datos.ANAC)</code></pre>
+<pre><code>##  [1] &quot;Fecha&quot;                             &quot;Hora.UTC&quot;                         
+##  [3] &quot;Clase.de.Vuelo..todos.los.vuelos.&quot; &quot;ClasificaciÃ³n.Vuelo&quot;             
+##  [5] &quot;Tipo.de.Movimiento&quot;                &quot;Aeropuerto&quot;                       
+##  [7] &quot;Origen...Destino&quot;                  &quot;Aerolinea.Nombre&quot;                 
+##  [9] &quot;Aeronave&quot;                          &quot;Pasajeros&quot;                        
+## [11] &quot;Calidad.dato&quot;</code></pre>
+<p>En este <code>data.set</code> tenemos <span class="math inline">\(11\)</span> columnas Referidas a distintos vuelos, tanto internacionales como nacionales.</p>
+<p>Quedemonos con los datos de los vuelos nacionales, esto es en los cuales la <code>clasificacion de vuelos</code> es <code>Dom</code>. Para esto nos apollaremos en la libreria <code>Tidyverse</code></p>
+<pre class="r"><code>require(tidyverse)</code></pre>
+<pre><code>## Loading required package: tidyverse</code></pre>
+<pre><code>## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --</code></pre>
+<pre><code>## v ggplot2 3.3.5     v purrr   0.3.4
+## v tibble  3.1.3     v dplyr   1.0.7
+## v tidyr   1.1.3     v stringr 1.4.0
+## v readr   2.0.0     v forcats 0.5.1</code></pre>
+<pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code># Modificamos un poco los nombres por comodidad
+
+datos.ANAC &lt;- datos.ANAC %&gt;% 
+  rename(
+    Clase_Vuelo = Clase.de.Vuelo..todos.los.vuelos., 
+    Clasificacion_Vuelo = `ClasificaciÃ³n.Vuelo`,
+  )
+colnames(datos.ANAC)</code></pre>
+<pre><code>##  [1] &quot;Fecha&quot;               &quot;Hora.UTC&quot;            &quot;Clase_Vuelo&quot;        
+##  [4] &quot;Clasificacion_Vuelo&quot; &quot;Tipo.de.Movimiento&quot;  &quot;Aeropuerto&quot;         
+##  [7] &quot;Origen...Destino&quot;    &quot;Aerolinea.Nombre&quot;    &quot;Aeronave&quot;           
+## [10] &quot;Pasajeros&quot;           &quot;Calidad.dato&quot;</code></pre>
+<p>Ahora si, busquemos todos los vuelos dentro de argentina.</p>
+<pre class="r"><code># datos.vuelos.nacionales := datos del csv de ANAC correspondiente a los vuelos nacionales
+
+
+datos.vuelos.nacionales &lt;- datos.ANAC %&gt;% 
+  filter(Clasificacion_Vuelo == &quot;Dom&quot;, Clase_Vuelo == &quot;Regular&quot;)
+
+dim(datos.vuelos.nacionales)</code></pre>
+<pre><code>## [1] 63597    11</code></pre>
+<p>Una de las cosas que podemos notar, es que El <code>Tipo de Movimiento</code> se vincula con un <code>Aeropuerto</code> (dato en IATA) al mismo tiempo este se vincula con un dato de un Aeropuerto tambien en IATA en la Columna de <code>Origen...Destino</code>, esto debe interpretarse como:</p>
+<blockquote>
+<p>El avión <em>despega</em> de el <em>Aeropuerto</em> <span class="math inline">\(x\)</span> con <em>Destino</em> <span class="math inline">\(y\)</span></p>
+</blockquote>
+<p>o bien</p>
+<blockquote>
+<p>El avión <em>aterriza</em> Al <em>Aeropuerto</em> <span class="math inline">\(x\)</span> con <em>Origen</em> <span class="math inline">\(y\)</span></p>
+</blockquote>
+<p>Esto es algo que debemos tener en cuenta más adelante para poder organizar bien los datos.</p>
+<p>Entonces, teniendo esto en cuenta, creemos dentro de este data.set dos columnas nuevas una señalando cual es el origen y el destino del vuelo, y asi ya tener bien identificado cual sera el viaje recorrido por el avion.</p>
+<pre class="r"><code>datos.vuelos.nacionales &lt;-datos.vuelos.nacionales %&gt;% 
+  mutate(Origen = 
+           if_else(Tipo.de.Movimiento==&#39;Despegue&#39;,Aeropuerto,Origen...Destino),
+         Destino = 
+           if_else(Tipo.de.Movimiento==&#39;Despegue&#39;,Origen...Destino,Aeropuerto))
+
+cat(&quot;Dimensiones: \n&quot;, dim(datos.vuelos.nacionales), &quot;\n\n&quot;)</code></pre>
+<pre><code>## Dimensiones: 
+##  63597 13</code></pre>
+<pre class="r"><code>cat(&quot;Columnas: \n&quot;, colnames(datos.vuelos.nacionales))</code></pre>
+<pre><code>## Columnas: 
+##  Fecha Hora.UTC Clase_Vuelo Clasificacion_Vuelo Tipo.de.Movimiento Aeropuerto Origen...Destino Aerolinea.Nombre Aeronave Pasajeros Calidad.dato Origen Destino</code></pre>
+</div>
+<div id="scrapeo-de-datos-de-coordenadas-de-wikipedia" class="section level2">
+<h2>Scrapeo de datos de coordenadas de wikipedia</h2>
+<p>En la consigna del tp, nos dejan el siguiente <a href="https://en.wikipedia.org/wiki/List_of_airports_in_Argentina">Link</a>. Este tiene una entrada de wikipedia el cual posee una tabla con datos de aeropuertos nacionales.</p>
+<pre class="r"><code>library(httr)
+library(rvest)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;rvest&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:readr&#39;:
+## 
+##     guess_encoding</code></pre>
+<pre class="r"><code>pagina.wiki &lt;- read_html(&#39;https://en.wikipedia.org/wiki/List_of_airports_in_Argentina&#39;)
+
+elemento_tabla &lt;- html_element(pagina.wiki,&#39;.wikitable&#39;)
+datos.wiki     &lt;- html_table(elemento_tabla)
+
+# datos.wiki := datos correspondientes a la tabla de wikipedia (sin ningun filtro)
+colnames(datos.wiki)</code></pre>
+<pre><code>## [1] &quot;City served&quot;  &quot;Province&quot;     &quot;ICAO&quot;         &quot;IATA&quot;         &quot;Airport name&quot;
+## [6] &quot;Coordinates&quot;</code></pre>
+<pre class="r"><code>class(datos.wiki)</code></pre>
+<pre><code>## [1] &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</code></pre>
+<pre class="r"><code>dim(datos.wiki)</code></pre>
+<pre><code>## [1] 167   6</code></pre>
+<p>Nosotros necesitamos los datos de <em>IATA</em> en lugar de los de <em>ICAO</em>, pues, en el dataset en <em>ANAC</em> los datos de los Aeropuertos utilizan los codigos en <em>IATA</em>.</p>
+<p>Ahora, podemos ver directamente en la tabla de wikipedia, que hay muchos aeropuertos que no estan identificados mediante este codigo por lo que necesitamos filtrarlos</p>
+<pre class="r"><code>codigos &lt;- unique(datos.wiki$IATA)
+codigos &lt;- codigos[codigos!=&quot;&quot;] #elimino el string vacio
+
+length(codigos)</code></pre>
+<pre><code>## [1] 105</code></pre>
+<pre class="r"><code>codigos</code></pre>
+<pre><code>##   [1] &quot;ARR&quot; &quot;BHI&quot; &quot;BRC&quot; &quot;AEP&quot; &quot;EPA&quot; &quot;EZE&quot; &quot;CPG&quot; &quot;CTC&quot; &quot;CCT&quot; &quot;CVH&quot; &quot;CRR&quot; &quot;CNT&quot;
+##  [13] &quot;HOS&quot; &quot;CLX&quot; &quot;CRD&quot; &quot;COC&quot; &quot;COR&quot; &quot;CSZ&quot; &quot;CNQ&quot; &quot;CUT&quot; &quot;UZU&quot; &quot;EHL&quot; &quot;FTE&quot; &quot;ING&quot;
+##  [25] &quot;EMX&quot; &quot;ELO&quot; &quot;EQS&quot; &quot;FMA&quot; &quot;GPO&quot; &quot;GNR&quot; &quot;VGS&quot; &quot;GGS&quot; &quot;OYA&quot; &quot;GHU&quot; &quot;IGB&quot; &quot;JSM&quot;
+##  [37] &quot;JUJ&quot; &quot;JNI&quot; &quot;LCM&quot; &quot;LPG&quot; &quot;IRJ&quot; &quot;LHS&quot; &quot;LLS&quot; &quot;LCP&quot; &quot;LMD&quot; &quot;LGS&quot; &quot;MQD&quot; &quot;MDQ&quot;
+##  [49] &quot;MDZ&quot; &quot;MDX&quot; &quot;RLO&quot; &quot;MJR&quot; &quot;MCS&quot; &quot;NEC&quot; &quot;NQN&quot; &quot;OVR&quot; &quot;ORA&quot; &quot;PRA&quot; &quot;AOL&quot; &quot;PEH&quot;
+##  [61] &quot;PMQ&quot; &quot;PSS&quot; &quot;PRQ&quot; &quot;PUD&quot; &quot;IGR&quot; &quot;PMY&quot; &quot;ULA&quot; &quot;RZA&quot; &quot;RAF&quot; &quot;RCQ&quot; &quot;RES&quot; &quot;RDS&quot;
+##  [73] &quot;RCU&quot; &quot;RGL&quot; &quot;RGA&quot; &quot;ROY&quot; &quot;RYO&quot; &quot;ROS&quot; &quot;SLA&quot; &quot;OES&quot; &quot;UAQ&quot; &quot;LUQ&quot; &quot;CPC&quot; &quot;AFA&quot;
+##  [85] &quot;SFN&quot; &quot;RSA&quot; &quot;SST&quot; &quot;SDE&quot; &quot;OLN&quot; &quot;SGV&quot; &quot;NCJ&quot; &quot;TDL&quot; &quot;TTG&quot; &quot;RHD&quot; &quot;REL&quot; &quot;OYO&quot;
+##  [97] &quot;TUC&quot; &quot;USH&quot; &quot;VCF&quot; &quot;VDM&quot; &quot;VDR&quot; &quot;VLG&quot; &quot;VMR&quot; &quot;VME&quot; &quot;APZ&quot;</code></pre>
+<p>Otro dato que necesitaremos limpiar es el dato de las coordenadas. Cada coordenada en la tabla de <code>datos.wiki</code> esta como un objeto <code>string</code>, el problema es que renemos los mismos datos en formatos diferentes y solo nos interesa quedarnos con los datos que son puramente numericos, pues, luego queremos utilizarlos para calcular la distancia entre Aeropuertos.</p>
+<p>Tratemos de filtrar los datos de coordenadas y separar latitudes y longitudes.</p>
+<pre class="r"><code># Inicializamos algunas variables
+latitud &lt;- c()
+longitud &lt;- c()
+primer.filtro  &lt;- c()
+segundo.filtro &lt;- c()
+coordenadas.filtradas &lt;- c()
+
+
+# Tomamos la columna de coordenadas desde la tabla de wikipedia
+coordenadas &lt;- datos.wiki$Coordinates
+
+
+# Separamos las coordenadas mediante el simbolo &#39;/&#39;
+# Esto nos vividira el string en una lista 
+primer.filtro &lt;- strsplit(coordenadas, split=&#39;/&#39;)
+
+
+# Recorremos cada coordenada, nos quedamos con los datos en formato numerico
+# Creando un vector que tendra en primer lugar las latitudes y en el segundo 
+# Las longitudes
+for( i in (1:length(coordenadas)) ) {
+  
+  segundo.filtro[i]        &lt;- gsub( &#39;[^0-9,;,.,-]&#39;, &#39;&#39;, primer.filtro[[i]][3] )
+  coordenadas.filtradas[i] &lt;- strsplit( segundo.filtro[i], &#39;;&#39; )
+
+  }
+
+
+# Del vector de coordenadas, creamos vectores de latitud y longitud por separado
+for( i in (1:length(coordenadas.filtradas))) {
+  
+  latitud  &lt;- c( latitud, coordenadas.filtradas[[i]][1])
+  longitud &lt;- c(longitud, coordenadas.filtradas[[i]][2])
+
+  }
+
+
+# Agregamos cols con latitud y longitud a los datos de wikipedia
+datos.wiki &lt;- datos.wiki %&gt;% 
+  mutate(
+    latitud=latitud, 
+    longitud=longitud
+  ) %&gt;%
+  filter(
+    IATA != &#39;&#39;
+    ) %&gt;%
+  select( 
+    `City served`, 
+    Province, 
+    IATA, 
+    `Airport name`, 
+    latitud, longitud
+    ) %&gt;%
+  rename(
+    ciudad = `City served`,
+    provincia = Province,
+    Aeropuerto = `Airport name`
+  )
+
+
+colnames(datos.wiki)</code></pre>
+<pre><code>## [1] &quot;ciudad&quot;     &quot;provincia&quot;  &quot;IATA&quot;       &quot;Aeropuerto&quot; &quot;latitud&quot;   
+## [6] &quot;longitud&quot;</code></pre>
+<p>Bueno, ahora tenemos los datos de la entrada de wikipedia, ya filtrados y listos para vincularlos con los datos emitidos por <em>ANAC</em>.</p>
+</div>
+<div id="vinculación-de-datasets" class="section level2">
+<h2>Vinculación de datasets</h2>
+<p>Lo primero que vamos a hacer acá es terminar de filtrar bien. Esto es, tomando los datos de <em>ANAC</em> y filtrando segun los codigos IATA que si tenemos de los datos de wikipedia.</p>
+<p>En particlar, tambien nos quedaremos con los datos de calidad <code>DEFINITIVO</code>, teniendo en cuenta que los que estan como <code>PROVISORIO</code> quizas esten sometidos a actualizaciones y por tanto no son del todo confiables.</p>
+<pre class="r"><code>datos.vuelos.nacionales &lt;- datos.vuelos.nacionales %&gt;% 
+  filter( Clasificacion_Vuelo %in% &quot;Dom&quot; &amp; 
+          Calidad.dato        %in% &quot;DEFINITIVO&quot;    &amp;
+          Origen              %in% codigos &amp;
+          Destino             %in% codigos
+          )
+
+dim(datos.vuelos.nacionales)</code></pre>
+<pre><code>## [1] 2712   13</code></pre>
+<p>Acá se nos plantea un problema… ¿Como es que inicialmente teniamos <span class="math inline">\(63597\)</span> vuelo y ahora solo <span class="math inline">\(2712\)</span>?</p>
+<p>Bueno, aca tuvimos un pequeño problema con los codigos… .</p>
+<p>Analisemos que codigos tiene cada uno de los datasets, esto es, los codigos en la pagina de wikipedia y en el csv de ANAC</p>
+<pre class="r"><code>codigos.ANAC &lt;- datos.ANAC %&gt;% select(Aeropuerto)
+codigos.wiki &lt;- datos.wiki %&gt;% select(IATA)
+
+table(codigos.ANAC)</code></pre>
+<pre><code>## codigos.ANAC
+##   AER   BAR   BCA   CAT   CBA   CHP   CRR   CRV   DIA   DIL   DOZ   DRY   ECA 
+## 23083  7161  2122   982  6524  1903  3191  4633   566    91  7982  1676  1913 
+##   ESQ   EZE   FDO   FSA   GAL   GOY   GPI   GRA   IGU   JUA   JUJ   LAR   MDP 
+##   791 22604 35395   511  2546    73     2   529  2212  1509  1720    15  2774 
+##   MLG   MOR   NEU   OSA   PAL   PAR   POS   ROS   RTA   RYD   SAL   SDE   SIS 
+##   791 37031  8018  1062  2331  2409  3973  3567  2168  1880  4823  1944  1722 
+##   SRA   SVO   TRC   TRE   TUC   UIS   USU   VIE 
+##  3734  1542  1031  2015  3256   486  2675   837</code></pre>
+<pre class="r"><code>codigos.ANAC &lt;- names(table(codigos.ANAC))
+
+codigos.ANAC</code></pre>
+<pre><code>##  [1] &quot;AER&quot; &quot;BAR&quot; &quot;BCA&quot; &quot;CAT&quot; &quot;CBA&quot; &quot;CHP&quot; &quot;CRR&quot; &quot;CRV&quot; &quot;DIA&quot; &quot;DIL&quot; &quot;DOZ&quot; &quot;DRY&quot;
+## [13] &quot;ECA&quot; &quot;ESQ&quot; &quot;EZE&quot; &quot;FDO&quot; &quot;FSA&quot; &quot;GAL&quot; &quot;GOY&quot; &quot;GPI&quot; &quot;GRA&quot; &quot;IGU&quot; &quot;JUA&quot; &quot;JUJ&quot;
+## [25] &quot;LAR&quot; &quot;MDP&quot; &quot;MLG&quot; &quot;MOR&quot; &quot;NEU&quot; &quot;OSA&quot; &quot;PAL&quot; &quot;PAR&quot; &quot;POS&quot; &quot;ROS&quot; &quot;RTA&quot; &quot;RYD&quot;
+## [37] &quot;SAL&quot; &quot;SDE&quot; &quot;SIS&quot; &quot;SRA&quot; &quot;SVO&quot; &quot;TRC&quot; &quot;TRE&quot; &quot;TUC&quot; &quot;UIS&quot; &quot;USU&quot; &quot;VIE&quot;</code></pre>
+<pre class="r"><code>length(codigos.ANAC)</code></pre>
+<pre><code>## [1] 47</code></pre>
+<pre class="r"><code>codigos.wiki &lt;- names(table(codigos.wiki))
+codigos.wiki</code></pre>
+<pre><code>##   [1] &quot;AEP&quot; &quot;AFA&quot; &quot;AOL&quot; &quot;APZ&quot; &quot;ARR&quot; &quot;BHI&quot; &quot;BRC&quot; &quot;CCT&quot; &quot;CLX&quot; &quot;CNQ&quot; &quot;CNT&quot; &quot;COC&quot;
+##  [13] &quot;COR&quot; &quot;CPC&quot; &quot;CPG&quot; &quot;CRD&quot; &quot;CRR&quot; &quot;CSZ&quot; &quot;CTC&quot; &quot;CUT&quot; &quot;CVH&quot; &quot;EHL&quot; &quot;ELO&quot; &quot;EMX&quot;
+##  [25] &quot;EPA&quot; &quot;EQS&quot; &quot;EZE&quot; &quot;FMA&quot; &quot;FTE&quot; &quot;GGS&quot; &quot;GHU&quot; &quot;GNR&quot; &quot;GPO&quot; &quot;HOS&quot; &quot;IGB&quot; &quot;IGR&quot;
+##  [37] &quot;ING&quot; &quot;IRJ&quot; &quot;JNI&quot; &quot;JSM&quot; &quot;JUJ&quot; &quot;LCM&quot; &quot;LCP&quot; &quot;LGS&quot; &quot;LHS&quot; &quot;LLS&quot; &quot;LMD&quot; &quot;LPG&quot;
+##  [49] &quot;LUQ&quot; &quot;MCS&quot; &quot;MDQ&quot; &quot;MDX&quot; &quot;MDZ&quot; &quot;MJR&quot; &quot;MQD&quot; &quot;NCJ&quot; &quot;NEC&quot; &quot;NQN&quot; &quot;OES&quot; &quot;OLN&quot;
+##  [61] &quot;ORA&quot; &quot;OVR&quot; &quot;OYA&quot; &quot;OYO&quot; &quot;PEH&quot; &quot;PMQ&quot; &quot;PMY&quot; &quot;PRA&quot; &quot;PRQ&quot; &quot;PSS&quot; &quot;PUD&quot; &quot;RAF&quot;
+##  [73] &quot;RCQ&quot; &quot;RCU&quot; &quot;RDS&quot; &quot;REL&quot; &quot;RES&quot; &quot;RGA&quot; &quot;RGL&quot; &quot;RHD&quot; &quot;RLO&quot; &quot;ROS&quot; &quot;ROY&quot; &quot;RSA&quot;
+##  [85] &quot;RYO&quot; &quot;RZA&quot; &quot;SDE&quot; &quot;SFN&quot; &quot;SGV&quot; &quot;SLA&quot; &quot;SST&quot; &quot;TDL&quot; &quot;TTG&quot; &quot;TUC&quot; &quot;UAQ&quot; &quot;ULA&quot;
+##  [97] &quot;USH&quot; &quot;UZU&quot; &quot;VCF&quot; &quot;VDM&quot; &quot;VDR&quot; &quot;VGS&quot; &quot;VLG&quot; &quot;VME&quot; &quot;VMR&quot;</code></pre>
+<pre class="r"><code>length(codigos.wiki)</code></pre>
+<pre><code>## [1] 105</code></pre>
+<p>Veamos cuales coinciden.</p>
+<pre class="r"><code># Funcion burbuja := realiza un &quot;burbujeo&quot; entre vectores.
+#   Esta, me permitira comparar los elementos coincidentes entre estos dos vectores.
+burbuja &lt;- function(vec.prim, vec.sec){
+    coinciden &lt;- c()
+    
+    for (i in (1:length(vec.prim))){
+      for (j in (1:length(vec.sec))){
+        if (vec.sec[j] == vec.prim[i]) {
+          coinciden &lt;- c(coinciden, vec.prim[i])
+        }
+      }
+    }
+    return(coinciden) 
+  } 
+
+burbuja(codigos.wiki, codigos.ANAC)</code></pre>
+<pre><code>## [1] &quot;CRR&quot; &quot;EZE&quot; &quot;JUJ&quot; &quot;ROS&quot; &quot;SDE&quot; &quot;TUC&quot;</code></pre>
+<p>Vemos que solo coinciden 6 codigos, es decir, a lo que necesitamos no sirve… ¿Porque razón sera?</p>
+<p>La razón es clara, y es el hecho de que los codigos en el dataset del <em>ANAC</em> no estan en S <em>IATA</em> sino, que estan justamente segun el <em>ANAC</em>, una lista de estos se pueden ver <a href="https://www.anac.gov.ar/anac/web/index.php/1/1164/aerodromos/listado-de-aerodromos-helipuertos-y-lugares-aptos">Acá</a></p>
+<p>Por suerte, nos dieron otro dataset, los cuales tienen varios formatos de codigos y una de las columnas justamente son codigos <em>ANAC</em> para algunos de los aeropuertos.</p>
+</div>
+<div id="carga-del-nuevo-dataset" class="section level2">
+<h2>Carga del nuevo dataset</h2>
+<p>Ahora, lo que quedaria es unir los datasets de wikipedia y de <em>ANAC</em> y reinterpretar un poco los datos para así luego poder calcular las distancias y las velocidades medias de cada vuelo.</p>
+<pre class="r"><code>data.nueva &lt;- read.csv(&quot;sna_abril_2021_fixed_encoding.csv&quot;, encoding = &#39;utf-8&#39;)
+colnames(data.nueva)</code></pre>
+<pre><code>##  [1] &quot;X&quot;          &quot;id&quot;         &quot;cpr&quot;        &quot;pais&quot;       &quot;nam&quot;       
+##  [6] &quot;fna&quot;        &quot;fuc&quot;        &quot;ose&quot;        &quot;iko&quot;        &quot;ita&quot;       
+## [11] &quot;ana&quot;        &quot;thr&quot;        &quot;nom_ciudad&quot; &quot;x&quot;          &quot;y&quot;</code></pre>
+<pre class="r"><code>dim(data.nueva)</code></pre>
+<pre><code>## [1] 55 15</code></pre>
+<p>Usando un bucle como el anterior, vamos a comparar que codigo de este nuevo dataset es el que coincide con los datos de <em>ANAC</em></p>
+<p>Solo compararemos los de la columna <code>ita</code> y <code>ana</code>, pues los otros codigos a simple vista son muy distintos.</p>
+<pre class="r"><code>codigos.ita &lt;- names(table(data.nueva %&gt;% select(ita)))
+codigos.ana &lt;- names(table(data.nueva %&gt;% select(ana)))
+
+cat(&quot;\n Comparación ita - ANAC \n&quot;)</code></pre>
+<pre><code>## 
+##  Comparación ita - ANAC</code></pre>
+<pre class="r"><code>burbuja(codigos.ANAC, codigos.ita )</code></pre>
+<pre><code>## [1] &quot;EZE&quot; &quot;FDO&quot; &quot;JUJ&quot; &quot;ROS&quot; &quot;SDE&quot; &quot;TUC&quot;</code></pre>
+<pre class="r"><code>cat(&quot;\n Comparación ana - ANAC \n&quot;)</code></pre>
+<pre><code>## 
+##  Comparación ana - ANAC</code></pre>
+<pre class="r"><code>burbuja(codigos.ana, codigos.ANAC)</code></pre>
+<pre><code>##  [1] &quot;AER&quot; &quot;BAR&quot; &quot;BCA&quot; &quot;CAT&quot; &quot;CBA&quot; &quot;CHP&quot; &quot;CRR&quot; &quot;CRV&quot; &quot;DIA&quot; &quot;DIL&quot; &quot;DOZ&quot; &quot;DRY&quot;
+## [13] &quot;ECA&quot; &quot;ESQ&quot; &quot;EZE&quot; &quot;FDO&quot; &quot;FSA&quot; &quot;GAL&quot; &quot;GPI&quot; &quot;GRA&quot; &quot;IGU&quot; &quot;JUA&quot; &quot;JUJ&quot; &quot;LAR&quot;
+## [25] &quot;MDP&quot; &quot;MLG&quot; &quot;NEU&quot; &quot;OSA&quot; &quot;PAL&quot; &quot;PAR&quot; &quot;POS&quot; &quot;ROS&quot; &quot;RTA&quot; &quot;RYD&quot; &quot;SAL&quot; &quot;SDE&quot;
+## [37] &quot;SIS&quot; &quot;SRA&quot; &quot;SVO&quot; &quot;TRC&quot; &quot;TRE&quot; &quot;TUC&quot; &quot;UIS&quot; &quot;USU&quot; &quot;VIE&quot;</code></pre>
+<p>Listo, sabemos que la lista de codigos que debemos utilizar para comparar es la columna <code>ana</code>.</p>
+<p>Tomemos de este dataset los datos que nos sean de utilidad, para luego mergear ambos datasets.</p>
+<pre class="r"><code>datos.aeropuertos.nacionales &lt;- data.nueva %&gt;%
+  select(
+    cpr, nam, fna, ana, x, y
+  ) %&gt;%
+  rename(
+    provincia = cpr,
+    ciudad = nam,
+    aeropuerto = fna,
+    codigo.ANAC = ana,
+    longitud = x,
+    latitud = y
+  )
+
+
+cat(&quot;Columnas: \n\n&quot;, colnames(datos.aeropuertos.nacionales))</code></pre>
+<pre><code>## Columnas: 
+## 
+##  provincia ciudad aeropuerto codigo.ANAC longitud latitud</code></pre>
+<pre class="r"><code>cat(&quot;Dimensiones: \n\n&quot;, dim(datos.aeropuertos.nacionales))</code></pre>
+<pre><code>## Dimensiones: 
+## 
+##  55 6</code></pre>
+<pre class="r"><code>head(datos.aeropuertos.nacionales)</code></pre>
+<div class="kable-table">
+<table>
+<colgroup>
+<col width="11%" />
+<col width="17%" />
+<col width="47%" />
+<col width="8%" />
+<col width="7%" />
+<col width="7%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">provincia</th>
+<th align="left">ciudad</th>
+<th align="left">aeropuerto</th>
+<th align="left">codigo.ANAC</th>
+<th align="right">longitud</th>
+<th align="right">latitud</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Santa Cruz</td>
+<td align="left">El Calafate</td>
+<td align="left">Aeropuerto de El Calafate Comandante Armando Tola</td>
+<td align="left">ECA</td>
+<td align="right">-72.05305</td>
+<td align="right">-50.28035</td>
+</tr>
+<tr class="even">
+<td align="left">Tierra Del Fue</td>
+<td align="left">Ushuaia</td>
+<td align="left">Aeropuerto de Ushuaia Malvinas Argentinas</td>
+<td align="left">USU</td>
+<td align="right">-68.30810</td>
+<td align="right">-54.84359</td>
+</tr>
+<tr class="odd">
+<td align="left">Santa cruz</td>
+<td align="left">Rio Gallegos</td>
+<td align="left">Aeropuerto de RÃ­o Gallegos Piloto Civil Norberto FernÃ¡ndez</td>
+<td align="left">GAL</td>
+<td align="right">-69.30792</td>
+<td align="right">-51.60895</td>
+</tr>
+<tr class="even">
+<td align="left">Tierra Del Fue</td>
+<td align="left">RÃ­o Grande</td>
+<td align="left">Aeropuerto de Rio Grande Gob. RamÃ³n Trejo Noel</td>
+<td align="left">GRA</td>
+<td align="right">-67.75308</td>
+<td align="right">-53.77784</td>
+</tr>
+<tr class="odd">
+<td align="left">Chubut</td>
+<td align="left">Esquel</td>
+<td align="left">Aeropuerto de Esquel Brigadier General Antonio Parodi</td>
+<td align="left">ESQ</td>
+<td align="right">-71.13665</td>
+<td align="right">-42.90471</td>
+</tr>
+<tr class="even">
+<td align="left">RÃ­o Negro</td>
+<td align="left">San Carlos de Bariloche</td>
+<td align="left">Aeropuerto de San Carlos de Bariloche Teniente Luis Candelaria</td>
+<td align="left">BAR</td>
+<td align="right">-71.15931</td>
+<td align="right">-41.15032</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Ahora si, hagamos una union de datos entre los dataset de <em>ANAC</em> y los datos de aeropuertos.</p>
+<pre class="r"><code>new.df.vuelos.nacionales &lt;- datos.ANAC %&gt;% 
+  filter(
+    Clasificacion_Vuelo == &quot;Dom&quot;, 
+    Clase_Vuelo == &quot;Regular&quot;
+    )
+
+new.df.vuelos.nacionales&lt;- new.df.vuelos.nacionales %&gt;% 
+  mutate(Origen = 
+           if_else(Tipo.de.Movimiento==&#39;Despegue&#39;,Aeropuerto,Origen...Destino),
+         Destino = 
+           if_else(Tipo.de.Movimiento==&#39;Despegue&#39;,Origen...Destino,Aeropuerto)
+         ) %&gt;%
+  filter(  
+          Calidad.dato        %in% &quot;DEFINITIVO&quot;    &amp;
+          Origen              %in% codigos.ana &amp;
+          Destino             %in% codigos.ana
+          ) 
+
+
+cat(&quot;Columnas: \n\n&quot;, colnames(new.df.vuelos.nacionales))</code></pre>
+<pre><code>## Columnas: 
+## 
+##  Fecha Hora.UTC Clase_Vuelo Clasificacion_Vuelo Tipo.de.Movimiento Aeropuerto Origen...Destino Aerolinea.Nombre Aeronave Pasajeros Calidad.dato Origen Destino</code></pre>
+<pre class="r"><code>cat(&quot;Dimensiones: \n\n&quot;, dim(new.df.vuelos.nacionales))</code></pre>
+<pre><code>## Dimensiones: 
+## 
+##  45024 13</code></pre>
+<pre class="r"><code>head(new.df.vuelos.nacionales)</code></pre>
+<div class="kable-table">
+<table style="width:100%;">
+<colgroup>
+<col width="6%" />
+<col width="5%" />
+<col width="6%" />
+<col width="11%" />
+<col width="10%" />
+<col width="6%" />
+<col width="9%" />
+<col width="13%" />
+<col width="9%" />
+<col width="5%" />
+<col width="7%" />
+<col width="3%" />
+<col width="4%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Fecha</th>
+<th align="left">Hora.UTC</th>
+<th align="left">Clase_Vuelo</th>
+<th align="left">Clasificacion_Vuelo</th>
+<th align="left">Tipo.de.Movimiento</th>
+<th align="left">Aeropuerto</th>
+<th align="left">Origen…Destino</th>
+<th align="left">Aerolinea.Nombre</th>
+<th align="left">Aeronave</th>
+<th align="right">Pasajeros</th>
+<th align="left">Calidad.dato</th>
+<th align="left">Origen</th>
+<th align="left">Destino</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">01/01/2021</td>
+<td align="left">00:24</td>
+<td align="left">Regular</td>
+<td align="left">Dom</td>
+<td align="left">Aterrizaje</td>
+<td align="left">EZE</td>
+<td align="left">GRA</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">BO-B737-8MB</td>
+<td align="right">70</td>
+<td align="left">DEFINITIVO</td>
+<td align="left">GRA</td>
+<td align="left">EZE</td>
+</tr>
+<tr class="even">
+<td align="left">01/01/2021</td>
+<td align="left">00:26</td>
+<td align="left">Regular</td>
+<td align="left">Dom</td>
+<td align="left">Aterrizaje</td>
+<td align="left">EZE</td>
+<td align="left">ECA</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">BO-737-800</td>
+<td align="right">70</td>
+<td align="left">DEFINITIVO</td>
+<td align="left">ECA</td>
+<td align="left">EZE</td>
+</tr>
+<tr class="odd">
+<td align="left">01/01/2021</td>
+<td align="left">00:29</td>
+<td align="left">Regular</td>
+<td align="left">Dom</td>
+<td align="left">Aterrizaje</td>
+<td align="left">EZE</td>
+<td align="left">SAL</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">BO-B-737-76N</td>
+<td align="right">12</td>
+<td align="left">DEFINITIVO</td>
+<td align="left">SAL</td>
+<td align="left">EZE</td>
+</tr>
+<tr class="even">
+<td align="left">01/01/2021</td>
+<td align="left">00:37</td>
+<td align="left">Regular</td>
+<td align="left">Dom</td>
+<td align="left">Aterrizaje</td>
+<td align="left">EZE</td>
+<td align="left">TUC</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">EMB-ERJ190100IGW</td>
+<td align="right">26</td>
+<td align="left">DEFINITIVO</td>
+<td align="left">TUC</td>
+<td align="left">EZE</td>
+</tr>
+<tr class="odd">
+<td align="left">01/01/2021</td>
+<td align="left">07:09</td>
+<td align="left">Regular</td>
+<td align="left">Dom</td>
+<td align="left">Despegue</td>
+<td align="left">EZE</td>
+<td align="left">ECA</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">BO-B737-800</td>
+<td align="right">35</td>
+<td align="left">DEFINITIVO</td>
+<td align="left">EZE</td>
+<td align="left">ECA</td>
+</tr>
+<tr class="even">
+<td align="left">01/01/2021</td>
+<td align="left">08:10</td>
+<td align="left">Regular</td>
+<td align="left">Dom</td>
+<td align="left">Despegue</td>
+<td align="left">EZE</td>
+<td align="left">JUJ</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">EMB-ERJ190100IGW</td>
+<td align="right">46</td>
+<td align="left">DEFINITIVO</td>
+<td align="left">EZE</td>
+<td align="left">JUJ</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Esto tiene otra cara, ahora tenemos <span class="math inline">\(45024\)</span> datos para analizar.</p>
+<pre class="r"><code># Unimos los datasets utilizando la funcion merge 
+# Utililizando los datos del Origen
+df_origen &lt;- merge( x=new.df.vuelos.nacionales,         
+                    y=datos.aeropuertos.nacionales, 
+                    by.x=&#39;Origen&#39;, by.y=&#39;codigo.ANAC&#39;)
+
+# Utilizando los datos del Destino
+df_destino &lt;- merge(x=new.df.vuelos.nacionales, 
+                    y=datos.aeropuertos.nacionales,
+                    by.x=&#39;Destino&#39;, by.y=&#39;codigo.ANAC&#39;)
+
+#ordeno a partir de fecha y hora (y si coinciden a partir del modelo de avion)
+new.df.vuelos.nacionales &lt;- new.df.vuelos.nacionales %&gt;%
+  arrange( Fecha,
+           Hora.UTC,
+           Aeronave
+           )
+
+# Realizamos el mismo ordenamiento con los datos mergeados
+df_destino &lt;- df_destino %&gt;% arrange( Fecha, Hora.UTC, Aeronave )
+df_origen  &lt;- df_origen  %&gt;% arrange( Fecha, Hora.UTC, Aeronave )
+
+#agrego las columnas a los datos filtrados
+new.df.vuelos.nacionales &lt;- new.df.vuelos.nacionales %&gt;% 
+  mutate(
+    ciudad.origen = df_origen$ciudad,
+    ciudad.destino = df_destino$ciudad,
+    provincia.origen = df_origen$provincia,
+    provincia.destino = df_destino$provincia,
+    lat.origen = df_origen$latitud,
+    lat.destino = df_destino$latitud,
+    long.origen = df_origen$longitud,
+    long.destino = df_destino$longitud
+  )
+
+
+
+cat(&quot;Columnas: \n\n&quot;, colnames(new.df.vuelos.nacionales))</code></pre>
+<pre><code>## Columnas: 
+## 
+##  Fecha Hora.UTC Clase_Vuelo Clasificacion_Vuelo Tipo.de.Movimiento Aeropuerto Origen...Destino Aerolinea.Nombre Aeronave Pasajeros Calidad.dato Origen Destino ciudad.origen ciudad.destino provincia.origen provincia.destino lat.origen lat.destino long.origen long.destino</code></pre>
+<pre class="r"><code>cat(&quot;Dimensiones: \n\n&quot;, dim(new.df.vuelos.nacionales))</code></pre>
+<pre><code>## Dimensiones: 
+## 
+##  45024 21</code></pre>
+<pre class="r"><code>head(new.df.vuelos.nacionales)</code></pre>
+<div class="kable-table">
+<table>
+<colgroup>
+<col width="3%" />
+<col width="3%" />
+<col width="4%" />
+<col width="6%" />
+<col width="6%" />
+<col width="3%" />
+<col width="5%" />
+<col width="8%" />
+<col width="5%" />
+<col width="3%" />
+<col width="4%" />
+<col width="2%" />
+<col width="2%" />
+<col width="4%" />
+<col width="5%" />
+<col width="5%" />
+<col width="6%" />
+<col width="3%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Fecha</th>
+<th align="left">Hora.UTC</th>
+<th align="left">Clase_Vuelo</th>
+<th align="left">Clasificacion_Vuelo</th>
+<th align="left">Tipo.de.Movimiento</th>
+<th align="left">Aeropuerto</th>
+<th align="left">Origen…Destino</th>
+<th align="left">Aerolinea.Nombre</th>
+<th align="left">Aeronave</th>
+<th align="right">Pasajeros</th>
+<th align="left">Calidad.dato</th>
+<th align="left">Origen</th>
+<th align="left">Destino</th>
+<th align="left">ciudad.origen</th>
+<th align="left">ciudad.destino</th>
+<th align="left">provincia.origen</th>
+<th align="left">provincia.destino</th>
+<th align="right">lat.origen</th>
+<th align="right">lat.destino</th>
+<th align="right">long.origen</th>
+<th align="right">long.destino</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">01/01/2021</td>
+<td align="left">00:24</td>
+<td align="left">Regular</td>
+<td align="left">Dom</td>
+<td align="left">Aterrizaje</td>
+<td align="left">EZE</td>
+<td align="left">GRA</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">BO-B737-8MB</td>
+<td align="right">70</td>
+<td align="left">DEFINITIVO</td>
+<td align="left">GRA</td>
+<td align="left">EZE</td>
+<td align="left">RÃ­o Grande</td>
+<td align="left">Ezeiza</td>
+<td align="left">Tierra Del Fue</td>
+<td align="left">Buenos Aires</td>
+<td align="right">-53.77784</td>
+<td align="right">-34.81229</td>
+<td align="right">-67.75308</td>
+<td align="right">-58.54246</td>
+</tr>
+<tr class="even">
+<td align="left">01/01/2021</td>
+<td align="left">00:26</td>
+<td align="left">Regular</td>
+<td align="left">Dom</td>
+<td align="left">Aterrizaje</td>
+<td align="left">EZE</td>
+<td align="left">ECA</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">BO-737-800</td>
+<td align="right">70</td>
+<td align="left">DEFINITIVO</td>
+<td align="left">ECA</td>
+<td align="left">EZE</td>
+<td align="left">El Calafate</td>
+<td align="left">Ezeiza</td>
+<td align="left">Santa Cruz</td>
+<td align="left">Buenos Aires</td>
+<td align="right">-50.28035</td>
+<td align="right">-34.81229</td>
+<td align="right">-72.05305</td>
+<td align="right">-58.54246</td>
+</tr>
+<tr class="odd">
+<td align="left">01/01/2021</td>
+<td align="left">00:29</td>
+<td align="left">Regular</td>
+<td align="left">Dom</td>
+<td align="left">Aterrizaje</td>
+<td align="left">EZE</td>
+<td align="left">SAL</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">BO-B-737-76N</td>
+<td align="right">12</td>
+<td align="left">DEFINITIVO</td>
+<td align="left">SAL</td>
+<td align="left">EZE</td>
+<td align="left">Salta</td>
+<td align="left">Ezeiza</td>
+<td align="left">Salta</td>
+<td align="left">Buenos Aires</td>
+<td align="right">-24.85378</td>
+<td align="right">-34.81229</td>
+<td align="right">-65.48439</td>
+<td align="right">-58.54246</td>
+</tr>
+<tr class="even">
+<td align="left">01/01/2021</td>
+<td align="left">00:37</td>
+<td align="left">Regular</td>
+<td align="left">Dom</td>
+<td align="left">Aterrizaje</td>
+<td align="left">EZE</td>
+<td align="left">TUC</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">EMB-ERJ190100IGW</td>
+<td align="right">26</td>
+<td align="left">DEFINITIVO</td>
+<td align="left">TUC</td>
+<td align="left">EZE</td>
+<td align="left">Tucuman</td>
+<td align="left">Ezeiza</td>
+<td align="left">Tucuman</td>
+<td align="left">Buenos Aires</td>
+<td align="right">-26.83550</td>
+<td align="right">-34.81229</td>
+<td align="right">-65.10225</td>
+<td align="right">-58.54246</td>
+</tr>
+<tr class="odd">
+<td align="left">01/01/2021</td>
+<td align="left">07:09</td>
+<td align="left">Regular</td>
+<td align="left">Dom</td>
+<td align="left">Despegue</td>
+<td align="left">EZE</td>
+<td align="left">ECA</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">BO-B737-800</td>
+<td align="right">35</td>
+<td align="left">DEFINITIVO</td>
+<td align="left">EZE</td>
+<td align="left">ECA</td>
+<td align="left">Ezeiza</td>
+<td align="left">El Calafate</td>
+<td align="left">Buenos Aires</td>
+<td align="left">Santa Cruz</td>
+<td align="right">-34.81229</td>
+<td align="right">-50.28035</td>
+<td align="right">-58.54246</td>
+<td align="right">-72.05305</td>
+</tr>
+<tr class="even">
+<td align="left">01/01/2021</td>
+<td align="left">08:10</td>
+<td align="left">Regular</td>
+<td align="left">Dom</td>
+<td align="left">Despegue</td>
+<td align="left">EZE</td>
+<td align="left">JUJ</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">EMB-ERJ190100IGW</td>
+<td align="right">46</td>
+<td align="left">DEFINITIVO</td>
+<td align="left">EZE</td>
+<td align="left">JUJ</td>
+<td align="left">Ezeiza</td>
+<td align="left">Jujuy</td>
+<td align="left">Buenos Aires</td>
+<td align="left">Jujuy</td>
+<td align="right">-34.81229</td>
+<td align="right">-24.38986</td>
+<td align="right">-58.54246</td>
+<td align="right">-65.09911</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Obtuvimos asi, un dataset que tiene las las coordenadas de origenes y destinos, ciudades de origen y destino y provincias.</p>
+<p>Podemos notar tambien, que hay columnas que ya no son de utilidad. Por lo que crearemos teniendo en cuenta que:</p>
+<ul>
+<li><code>Calidad de datos</code> : ya no es nesesaria</li>
+<li><code>Aeropuerto</code> : sera reemplazado por el dato de Origen</li>
+<li><code>Origen...Destino</code> : Se reemplazara por el Destino</li>
+<li><code>Latitudes/origenes/pasajeros</code> : Haremos la conversión de <code>string</code> a <code>double</code></li>
+</ul>
+<pre class="r"><code>new.df.vuelos.nacionales &lt;- new.df.vuelos.nacionales %&gt;%
+  select( 
+    Fecha, Hora.UTC, Pasajeros, Clase_Vuelo, 
+    Tipo.de.Movimiento, Aerolinea.Nombre, 
+    Aeronave, Origen, Destino, 
+    ciudad.origen, ciudad.destino, 
+    provincia.origen, provincia.destino, 
+    lat.origen, long.origen, lat.destino, long.destino, 
+    ) %&gt;%
+  mutate(
+    Pasajeros = as.double(Pasajeros),
+    lat.origen = as.double(lat.origen), 
+    long.origen = as.double(long.origen), 
+    lat.destino = as.double(lat.destino), 
+    long.destino = as.double(long.destino),
+    ) %&gt;%
+  rename(
+    Aerolinea = Aerolinea.Nombre
+  )
+  
+
+cat(&quot;Columnas: \n\n&quot;, colnames(new.df.vuelos.nacionales))</code></pre>
+<pre><code>## Columnas: 
+## 
+##  Fecha Hora.UTC Pasajeros Clase_Vuelo Tipo.de.Movimiento Aerolinea Aeronave Origen Destino ciudad.origen ciudad.destino provincia.origen provincia.destino lat.origen long.origen lat.destino long.destino</code></pre>
+<pre class="r"><code>cat(&quot;Dimensiones: \n\n&quot;, dim(new.df.vuelos.nacionales))</code></pre>
+<pre><code>## Dimensiones: 
+## 
+##  45024 17</code></pre>
+<pre class="r"><code>head(new.df.vuelos.nacionales)</code></pre>
+<div class="kable-table">
+<table>
+<colgroup>
+<col width="4%" />
+<col width="3%" />
+<col width="4%" />
+<col width="5%" />
+<col width="8%" />
+<col width="10%" />
+<col width="7%" />
+<col width="3%" />
+<col width="3%" />
+<col width="6%" />
+<col width="6%" />
+<col width="7%" />
+<col width="7%" />
+<col width="4%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Fecha</th>
+<th align="left">Hora.UTC</th>
+<th align="right">Pasajeros</th>
+<th align="left">Clase_Vuelo</th>
+<th align="left">Tipo.de.Movimiento</th>
+<th align="left">Aerolinea</th>
+<th align="left">Aeronave</th>
+<th align="left">Origen</th>
+<th align="left">Destino</th>
+<th align="left">ciudad.origen</th>
+<th align="left">ciudad.destino</th>
+<th align="left">provincia.origen</th>
+<th align="left">provincia.destino</th>
+<th align="right">lat.origen</th>
+<th align="right">long.origen</th>
+<th align="right">lat.destino</th>
+<th align="right">long.destino</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">01/01/2021</td>
+<td align="left">00:24</td>
+<td align="right">70</td>
+<td align="left">Regular</td>
+<td align="left">Aterrizaje</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">BO-B737-8MB</td>
+<td align="left">GRA</td>
+<td align="left">EZE</td>
+<td align="left">RÃ­o Grande</td>
+<td align="left">Ezeiza</td>
+<td align="left">Tierra Del Fue</td>
+<td align="left">Buenos Aires</td>
+<td align="right">-53.77784</td>
+<td align="right">-67.75308</td>
+<td align="right">-34.81229</td>
+<td align="right">-58.54246</td>
+</tr>
+<tr class="even">
+<td align="left">01/01/2021</td>
+<td align="left">00:26</td>
+<td align="right">70</td>
+<td align="left">Regular</td>
+<td align="left">Aterrizaje</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">BO-737-800</td>
+<td align="left">ECA</td>
+<td align="left">EZE</td>
+<td align="left">El Calafate</td>
+<td align="left">Ezeiza</td>
+<td align="left">Santa Cruz</td>
+<td align="left">Buenos Aires</td>
+<td align="right">-50.28035</td>
+<td align="right">-72.05305</td>
+<td align="right">-34.81229</td>
+<td align="right">-58.54246</td>
+</tr>
+<tr class="odd">
+<td align="left">01/01/2021</td>
+<td align="left">00:29</td>
+<td align="right">12</td>
+<td align="left">Regular</td>
+<td align="left">Aterrizaje</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">BO-B-737-76N</td>
+<td align="left">SAL</td>
+<td align="left">EZE</td>
+<td align="left">Salta</td>
+<td align="left">Ezeiza</td>
+<td align="left">Salta</td>
+<td align="left">Buenos Aires</td>
+<td align="right">-24.85378</td>
+<td align="right">-65.48439</td>
+<td align="right">-34.81229</td>
+<td align="right">-58.54246</td>
+</tr>
+<tr class="even">
+<td align="left">01/01/2021</td>
+<td align="left">00:37</td>
+<td align="right">26</td>
+<td align="left">Regular</td>
+<td align="left">Aterrizaje</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">EMB-ERJ190100IGW</td>
+<td align="left">TUC</td>
+<td align="left">EZE</td>
+<td align="left">Tucuman</td>
+<td align="left">Ezeiza</td>
+<td align="left">Tucuman</td>
+<td align="left">Buenos Aires</td>
+<td align="right">-26.83550</td>
+<td align="right">-65.10225</td>
+<td align="right">-34.81229</td>
+<td align="right">-58.54246</td>
+</tr>
+<tr class="odd">
+<td align="left">01/01/2021</td>
+<td align="left">07:09</td>
+<td align="right">35</td>
+<td align="left">Regular</td>
+<td align="left">Despegue</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">BO-B737-800</td>
+<td align="left">EZE</td>
+<td align="left">ECA</td>
+<td align="left">Ezeiza</td>
+<td align="left">El Calafate</td>
+<td align="left">Buenos Aires</td>
+<td align="left">Santa Cruz</td>
+<td align="right">-34.81229</td>
+<td align="right">-58.54246</td>
+<td align="right">-50.28035</td>
+<td align="right">-72.05305</td>
+</tr>
+<tr class="even">
+<td align="left">01/01/2021</td>
+<td align="left">08:10</td>
+<td align="right">46</td>
+<td align="left">Regular</td>
+<td align="left">Despegue</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">EMB-ERJ190100IGW</td>
+<td align="left">EZE</td>
+<td align="left">JUJ</td>
+<td align="left">Ezeiza</td>
+<td align="left">Jujuy</td>
+<td align="left">Buenos Aires</td>
+<td align="left">Jujuy</td>
+<td align="right">-34.81229</td>
+<td align="right">-58.54246</td>
+<td align="right">-24.38986</td>
+<td align="right">-65.09911</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="calculo-de-distancias" class="section level2">
+<h2>Calculo de distancias</h2>
+<p>Para el calcular las distancias utilizaremos la libreria <a href="https://cran.r-project.org/web/packages/geosphere/index.html"><code>geosphere</code></a>, la cual tiene una seriae de herramientas muy utiles para hacer calculos con trigonometria esferica.</p>
+<p>Esta tiene una funcion llamada <code>disHavestine</code> (Cuyos detalles se pueden ver <a href="https://cran.r-project.org/web/packages/geosphere/geosphere.pdf">Acá</a>), la cual nos permitira calcular las distancias a partir de los datos de las latitudes y las longitudes.</p>
+<p>Esta función toma dos parametros inicialmente, los cuales son dos vectores cada uno tiene las longitudes y latitudes, “desde-hasta” para asi calcular la distancia.</p>
+<pre class="r"><code>require(geosphere)</code></pre>
+<pre><code>## Loading required package: geosphere</code></pre>
+<pre class="r"><code># Iniciamos algunas variables
+distancias &lt;- c()
+latitudes.origenes  &lt;- new.df.vuelos.nacionales$lat.origen
+longitudes.origenes &lt;- new.df.vuelos.nacionales$long.origen
+latitudes.destino   &lt;- new.df.vuelos.nacionales$lat.destino
+longitudes.destino  &lt;- new.df.vuelos.nacionales$long.destino
+
+# Calculamos las distancias utilizando disHaversine
+# Pasandolas a Kilometros
+for (i in 1:45024){
+  distancias &lt;- c( distancias, 
+                   (distHaversine(
+                     c(latitudes.origenes[i],longitudes.origenes[i]),
+                     c(latitudes.destino[i],longitudes.destino[i]))
+                   )/1000)
+}
+
+distancias[1:3]</code></pre>
+<pre><code>## [1] 1388.9893 1655.5274  929.2051</code></pre>
+<pre class="r"><code>new.df.vuelos.nacionales &lt;- new.df.vuelos.nacionales %&gt;%
+  mutate(distancia.km = distancias)
+
+cat(&quot;Columnas: \n\n&quot;, colnames(new.df.vuelos.nacionales))</code></pre>
+<pre><code>## Columnas: 
+## 
+##  Fecha Hora.UTC Pasajeros Clase_Vuelo Tipo.de.Movimiento Aerolinea Aeronave Origen Destino ciudad.origen ciudad.destino provincia.origen provincia.destino lat.origen long.origen lat.destino long.destino distancia.km</code></pre>
+<pre class="r"><code>cat(&quot;Dimensiones: \n\n&quot;, dim(new.df.vuelos.nacionales))</code></pre>
+<pre><code>## Dimensiones: 
+## 
+##  45024 18</code></pre>
+<pre class="r"><code>head(new.df.vuelos.nacionales)</code></pre>
+<div class="kable-table">
+<table>
+<colgroup>
+<col width="4%" />
+<col width="3%" />
+<col width="4%" />
+<col width="4%" />
+<col width="7%" />
+<col width="10%" />
+<col width="6%" />
+<col width="2%" />
+<col width="3%" />
+<col width="5%" />
+<col width="6%" />
+<col width="6%" />
+<col width="7%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="5%" />
+<col width="5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Fecha</th>
+<th align="left">Hora.UTC</th>
+<th align="right">Pasajeros</th>
+<th align="left">Clase_Vuelo</th>
+<th align="left">Tipo.de.Movimiento</th>
+<th align="left">Aerolinea</th>
+<th align="left">Aeronave</th>
+<th align="left">Origen</th>
+<th align="left">Destino</th>
+<th align="left">ciudad.origen</th>
+<th align="left">ciudad.destino</th>
+<th align="left">provincia.origen</th>
+<th align="left">provincia.destino</th>
+<th align="right">lat.origen</th>
+<th align="right">long.origen</th>
+<th align="right">lat.destino</th>
+<th align="right">long.destino</th>
+<th align="right">distancia.km</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">01/01/2021</td>
+<td align="left">00:24</td>
+<td align="right">70</td>
+<td align="left">Regular</td>
+<td align="left">Aterrizaje</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">BO-B737-8MB</td>
+<td align="left">GRA</td>
+<td align="left">EZE</td>
+<td align="left">RÃ­o Grande</td>
+<td align="left">Ezeiza</td>
+<td align="left">Tierra Del Fue</td>
+<td align="left">Buenos Aires</td>
+<td align="right">-53.77784</td>
+<td align="right">-67.75308</td>
+<td align="right">-34.81229</td>
+<td align="right">-58.54246</td>
+<td align="right">1388.9893</td>
+</tr>
+<tr class="even">
+<td align="left">01/01/2021</td>
+<td align="left">00:26</td>
+<td align="right">70</td>
+<td align="left">Regular</td>
+<td align="left">Aterrizaje</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">BO-737-800</td>
+<td align="left">ECA</td>
+<td align="left">EZE</td>
+<td align="left">El Calafate</td>
+<td align="left">Ezeiza</td>
+<td align="left">Santa Cruz</td>
+<td align="left">Buenos Aires</td>
+<td align="right">-50.28035</td>
+<td align="right">-72.05305</td>
+<td align="right">-34.81229</td>
+<td align="right">-58.54246</td>
+<td align="right">1655.5274</td>
+</tr>
+<tr class="odd">
+<td align="left">01/01/2021</td>
+<td align="left">00:29</td>
+<td align="right">12</td>
+<td align="left">Regular</td>
+<td align="left">Aterrizaje</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">BO-B-737-76N</td>
+<td align="left">SAL</td>
+<td align="left">EZE</td>
+<td align="left">Salta</td>
+<td align="left">Ezeiza</td>
+<td align="left">Salta</td>
+<td align="left">Buenos Aires</td>
+<td align="right">-24.85378</td>
+<td align="right">-65.48439</td>
+<td align="right">-34.81229</td>
+<td align="right">-58.54246</td>
+<td align="right">929.2051</td>
+</tr>
+<tr class="even">
+<td align="left">01/01/2021</td>
+<td align="left">00:37</td>
+<td align="right">26</td>
+<td align="left">Regular</td>
+<td align="left">Aterrizaje</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">EMB-ERJ190100IGW</td>
+<td align="left">TUC</td>
+<td align="left">EZE</td>
+<td align="left">Tucuman</td>
+<td align="left">Ezeiza</td>
+<td align="left">Tucuman</td>
+<td align="left">Buenos Aires</td>
+<td align="right">-26.83550</td>
+<td align="right">-65.10225</td>
+<td align="right">-34.81229</td>
+<td align="right">-58.54246</td>
+<td align="right">840.6170</td>
+</tr>
+<tr class="odd">
+<td align="left">01/01/2021</td>
+<td align="left">07:09</td>
+<td align="right">35</td>
+<td align="left">Regular</td>
+<td align="left">Despegue</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">BO-B737-800</td>
+<td align="left">EZE</td>
+<td align="left">ECA</td>
+<td align="left">Ezeiza</td>
+<td align="left">El Calafate</td>
+<td align="left">Buenos Aires</td>
+<td align="left">Santa Cruz</td>
+<td align="right">-34.81229</td>
+<td align="right">-58.54246</td>
+<td align="right">-50.28035</td>
+<td align="right">-72.05305</td>
+<td align="right">1655.5274</td>
+</tr>
+<tr class="even">
+<td align="left">01/01/2021</td>
+<td align="left">08:10</td>
+<td align="right">46</td>
+<td align="left">Regular</td>
+<td align="left">Despegue</td>
+<td align="left">AEROLINEAS ARGENTINAS SA</td>
+<td align="left">EMB-ERJ190100IGW</td>
+<td align="left">EZE</td>
+<td align="left">JUJ</td>
+<td align="left">Ezeiza</td>
+<td align="left">Jujuy</td>
+<td align="left">Buenos Aires</td>
+<td align="left">Jujuy</td>
+<td align="right">-34.81229</td>
+<td align="right">-58.54246</td>
+<td align="right">-24.38986</td>
+<td align="right">-65.09911</td>
+<td align="right">910.2314</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Ya tenemos las distancias en Kilometros, calculadas en base a las coordenadas.</p>
+</div>
+<div id="calculo-de-las-velocidades-promedio" class="section level2">
+<h2>Calculo de las Velocidades promedio</h2>
+<p>Así como esta el dato de las horas, no podemos utilizarlos para calcular las velocidades. Por suerte, estan en formato string y es facil reemplazar los <code>:</code> por <code>.</code>.</p>
+<p>Por otro lado, tenemos hora de <code>despegue</code> o <code>aterrizaje</code> por lo que debemos identificar que el vuelo sea el mismo para saber cuando despego en un lugar (Horario de partida) y aterrizo en otro (Horario de llegada).</p>
+<p>Algo a notar, es que tenemos filas impares, por lo que, al parecer hay más despegues que aterrizajes o al revez.</p>
+<p>Veamos esto.</p>
+<pre class="r"><code>aterrizajes &lt;- new.df.vuelos.nacionales %&gt;% filter(Tipo.de.Movimiento == &quot;Aterrizaje&quot;)
+despegues &lt;- new.df.vuelos.nacionales %&gt;% filter(Tipo.de.Movimiento == &quot;Despegue&quot;)
+
+dim(aterrizajes)</code></pre>
+<pre><code>## [1] 22126    18</code></pre>
+<pre class="r"><code>dim(despegues)</code></pre>
+<pre><code>## [1] 22898    18</code></pre>
+<p>Segun esto, tenemos mas despegues que aterrizajes… Esto es extraño, pero deberiamos quedarnos con un despegue por aterrizaje.</p>
+<p>Empecemos con lo mas sencillo, que es pasar las Horas a <code>double</code>.</p>
+</div>
+<div id="glosario-de-variables" class="section level1">
+<h1>Glosario de Variables</h1>
+<ul>
+<li><p><strong>datos.ANAC</strong> := datos del csv original de aterrizajes y vuelos.</p></li>
+<li><p><strong>datos.vuelos.nacionales</strong> := datos del csv de ANAC correspondiente a los vuelos nacionales.</p></li>
+<li><p><strong>datos.wiki</strong> := datos correspondientes a la tabla de wikipedia (sin ningun filtro).</p></li>
+<li><p><strong>codigos</strong> := Codigos <em>IATA</em> que se encuentran en la tabla de wikipedia.</p></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
