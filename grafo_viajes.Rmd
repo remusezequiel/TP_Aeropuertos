@@ -14,7 +14,20 @@ output:
     toc: yes
 subtitle: Laboratorio de Datos
 ---
+<style type="text/css">
+.title {
+  display: none;
+}
 
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
 # Viajes más Frecuentes
 
 En esta parte, utilizaremos los datos de `Origen` y `Destino` y la frecuencia de de viaje 
@@ -32,7 +45,7 @@ library(dplyr)
 library(igraph)
 
 # Leo el csv con los datos
-df.vuelos <- read.csv("vuelos_2021.csv")
+df.vuelos <- read.csv("./csv/vuelos_2021.csv")
 
 df.vuelos
 ```
@@ -95,6 +108,11 @@ ggraph(dendrogram, 'dendrogram') +
 Hagamos el primer grafo, pero tomando un origen y viendo que pasa con cada uno de estos.
 
 ```{r}
+## La idea de este codigo es que cuando ustedes lo tengan a mano
+## si oueden correrlo con , fig.show='animate' ouedan ver la 
+## Secuencia de como esta cada uno relacionado con todos.
+## A mi me falto tener instalado ffmep en windows cosa 
+## que se me complico instalar
 grafica.grafo.origen <- function(df, filtro){
   # Filtra el dataset  
   dt <- df %>% filter(Origen == filtro)

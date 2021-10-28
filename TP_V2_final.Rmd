@@ -1,6 +1,6 @@
 ---
 title: "TP -  Aeropuertos"
-author: "Grupo 8:  Cosarinsky Matias, Remus Ezequiel, Reyes Andres "
+author: "Grupo 8:  Cosarinsky Matias, Remus Ezequiel "
 date: ""
 output:
   html_document:
@@ -14,7 +14,20 @@ output:
     toc: yes
 subtitle: Laboratorio de Datos
 ---
+<style type="text/css">
+.title {
+  display: none;
+}
 
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
 # Primera Parte
 
 ## Analizamos un poco los datos del dataset de ANAC

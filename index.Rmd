@@ -1,7 +1,7 @@
 ---
 title: "Datos TP y Aclaraciones"
 author: "Grupo 8"
-date: 2020-12-01T21:13:14-05:00
+date: ""
 categories: ["R"]
 tags: ["R Markdown", "plot", "regression"]
 ---
