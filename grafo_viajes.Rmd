@@ -1,0 +1,133 @@
+---
+title: "TP -  Aeropuertos"
+author: "Grupo 8:  Cosarinsky Matias, Remus Ezequiel, Reyes Andres "
+date: ""
+output:
+  html_document:
+    df_print: paged
+    toc: yes
+  html_notebook:
+    theme: journal
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+subtitle: Laboratorio de Datos
+---
+
+# Viajes más Frecuentes
+
+En esta parte, utilizaremos los datos de `Origen` y `Destino` y la frecuencia de de viaje 
+de un lugar a otro, es decir la cantidad de veces que un  `Origen` esta relacionado con un `Destino`.
+
+Para esto, vamos a utilizar grafos, y los visualizaremos tanto con grafos dirigidos como grafos no dirigidos. Estos se ara con las librerias del paquete `ggraph`.
+
+
+```{r}
+# Corro las librerias necesarias
+library(ggraph)
+library(ggplot2)
+# library(ggthemes)
+library(dplyr)
+library(igraph)
+
+# Leo el csv con los datos
+df.vuelos <- read.csv("vuelos_2021.csv")
+
+df.vuelos
+```
+
+El `dataset` ya esta ordenado por *Origen* y *Destino*.
+
+Ahora, añadimos una columna contando la frecuencias de estos viajes.
+
+```{r}
+frec.viajes <- df.vuelos %>% select(Origen, Destino) %>% group_by(Origen,Destino) %>% summarise(n=n())
+frec.viajes
+```
+
+Habiendo tomado las freciencias de los viajes segun origen y destino, ya tenemos la información necesaria para podes visualizar lo que pasa con algun tipo de grafo.
+
+## Grafo NO dirigido
+
+Tomemos los datos y produscamos un grafo no dirigido donde el ancho del hilo de unión entre
+dos aeropuertos represente la cantidad de vuelos que hay entre estos dos aeropuertos.
+
+```{r  Fig1, echo=TRUE, fig.height=30, fig.width=30}
+# Tomo el dataframe del grafo y pido que no sea dirigido
+grafo <- graph.data.frame(frec.viajes, directed = F)
+
+
+plot.igraph( grafo, 
+             vertex.frame.color = "Forestgreen",
+             vertex.size=degree(grafo, mode = "out"),
+             vertex.label.cex=c(2,2.5,3), 
+             vertex.label.dist=0,
+             edge.color="black",
+             edge.curved = F, 
+             edge.width = E(grafo)/30)
+
+```
+
+En el grafo se puede visualizar que la mayoria de los viajes salen o de `EZE` o de `AER`. Entonces, tendria sentido preguntarse si hay alguna diferencia entre los vuelos que salen de `EZE` (o llegan) y los de `AER`.
+
+Tomemos dos dos dataframes distintos, uno con los origenes en `EZE` y otro en `AER`
+
+
+
+```{r}
+graph <- graph_from_data_frame(frec.viajes)
+ggraph(graph, layout = 'kk') +  geom_edge_link(aes(colour = factor(n))) + geom_node_point()
+```
+
+
+```{r}
+layout <- create_layout(graph, layout = 'drl')
+
+dendrogram <- as.dendrogram(hclust(dist(frec.viajes$n)))
+ggraph(dendrogram, 'dendrogram') + 
+    geom_edge_elbow()
+
+
+```
+
+
+Hagamos el primer grafo, pero tomando un origen y viendo que pasa con cada uno de estos.
+
+```{r}
+grafica.grafo.origen <- function(df, filtro){
+  # Filtra el dataset  
+  dt <- df %>% filter(Origen == filtro)
+  # crea el grafo
+  gf <- graph.data.frame(dt, directed = F)
+  
+  # Dibuja el grafo
+  plot.igraph( gf, 
+             vertex.frame.color = "Forestgreen",
+             vertex.label.cex=c(1.5,1,0.5), 
+             vertex.label.dist=0,
+             edge.color="black",
+             edge.curved = F, 
+             edge.width = E(gf)/30)
+  }
+
+nombres <- names(table(frec.viajes$Origen))
+
+for (i in (1:4)){
+  grafica.grafo.origen(frec.viajes, nombres[i])  
+}
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+

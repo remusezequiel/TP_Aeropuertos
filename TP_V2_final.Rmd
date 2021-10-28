@@ -1,6 +1,6 @@
 ---
 title: "TP -  Aeropuertos"
-author: "Grupo 8:  Corsniaky Matias, Remus Ezequiel, Reyes Andres "
+author: "Grupo 8:  Cosarinsky Matias, Remus Ezequiel, Reyes Andres "
 date: ""
 output:
   html_document:
@@ -26,7 +26,7 @@ Leamos y analisemos que tiene este `csv`.
 
 ```{r}
 # datos.ANAC := datos del csv original de aterrizajes y vuelos
-datos.ANAC <- read.csv('202109-informe-ministerio.csv', sep=';', encoding = 'utf-8')
+datos.ANAC <- read.csv('202109-informe-ministerio.csv', sep=';', encoding = 'UTF-8')
 datos.ANAC
 colnames(datos.ANAC)
 ```
@@ -46,7 +46,6 @@ require(tidyverse)
 datos.ANAC <- datos.ANAC %>% 
   rename(
     Clase_Vuelo = Clase.de.Vuelo..todos.los.vuelos., 
-    Clasificacion_Vuelo = `ClasificaciÃ³n.Vuelo`,
   )
 colnames(datos.ANAC)
 datos.ANAC
@@ -58,7 +57,10 @@ Ahora si, busquemos todos los vuelos dentro de argentina.
 
 
 datos.vuelos.nacionales <- datos.ANAC %>% 
-  filter(Clasificacion_Vuelo == "Dom", Clase_Vuelo == "Regular")
+  filter( 
+    Clasificación.Vuelo == "Dom", 
+    Clase_Vuelo == "Regular"
+    )
 
 datos.vuelos.nacionales
 ```
@@ -80,10 +82,10 @@ cual sera el viaje recorrido por el avion.
 
 ```{r}
 datos.vuelos.nacionales <-datos.vuelos.nacionales %>% 
-  mutate(Origen = 
-           if_else(Tipo.de.Movimiento=='Despegue',Aeropuerto,Origen...Destino),
-         Destino = 
-           if_else(Tipo.de.Movimiento=='Despegue',Origen...Destino,Aeropuerto))
+  mutate(
+    Origen  = if_else(Tipo.de.Movimiento=='Despegue',Aeropuerto,Origen...Destino),
+    Destino = if_else(Tipo.de.Movimiento=='Despegue',Origen...Destino,Aeropuerto)
+    )
 
 
 datos.vuelos.nacionales
@@ -203,11 +205,12 @@ En particlar, tambien nos quedaremos con los datos de calidad `DEFINITIVO`, teni
 
 ```{r}
 datos.vuelos.nacionales <- datos.vuelos.nacionales %>% 
-  filter( Clasificacion_Vuelo %in% "Dom" & 
-          Calidad.dato        %in% "DEFINITIVO"    &
-          Origen              %in% codigos &
-          Destino             %in% codigos
-          )
+  filter( 
+    Clasificación.Vuelo %in% "Dom" & 
+    Calidad.dato        %in% "DEFINITIVO"    &
+    Origen              %in% codigos &
+    Destino             %in% codigos
+  )
 
 datos.vuelos.nacionales
 ```
@@ -259,13 +262,14 @@ burbuja(codigos.wiki, codigos.ANAC)
 ```
 Vemos que solo coinciden 6 codigos, es decir, a lo que necesitamos no sirve... ¿Porque razón sera?
 
-La razón es clara, y es el hecho de que los codigos en el dataset del *ANAC* no estan en S *IATA*
+La razón es clara, y es el hecho de que los codigos en el dataset del *ANAC* no estan en *IATA*
 sino, que estan justamente segun el *ANAC*, una lista de estos se pueden ver [Acá](https://www.anac.gov.ar/anac/web/index.php/1/1164/aerodromos/listado-de-aerodromos-helipuertos-y-lugares-aptos)
 
 
 Por suerte, nos dieron otro dataset, los cuales tienen varios formatos de codigos y una de las columnas 
 justamente son codigos *ANAC* para algunos de los aeropuertos.
 
+*Nota: Sabemos que el algoritmo del ordenamiento burbuja no es lo más efectivo, pues tiene un crecimiento logaritmico, no uno lineal, pero en este caso puntual sabiamos que iba a funcionar bien.*
 
 ## Carga del nuevo dataset
 
@@ -326,30 +330,25 @@ Ahora si, hagamos una union de datos entre los dataset de *ANAC* y los datos de 
 ```{r}
 new.df.vuelos.nacionales <- datos.ANAC %>% 
   filter(
-    Clasificacion_Vuelo == "Dom", 
+    Calidad.dato == "DEFINITIVO",
+    Aerolinea.Nombre != "0",
+    Clasificación.Vuelo == "Dom", 
     Clase_Vuelo == "Regular"
-    )
-
-new.df.vuelos.nacionales<- new.df.vuelos.nacionales %>% 
-  mutate(Origen = 
-           if_else(Tipo.de.Movimiento=='Despegue',Aeropuerto,Origen...Destino),
-         Destino = 
-           if_else(Tipo.de.Movimiento=='Despegue',Origen...Destino,Aeropuerto)
-         ) %>%
+    ) %>% 
+  mutate(
+    Origen = if_else(Tipo.de.Movimiento=='Despegue',Aeropuerto,Origen...Destino),
+    Destino = if_else(Tipo.de.Movimiento=='Despegue',Origen...Destino,Aeropuerto)
+    ) %>%
   filter(  
-          Calidad.dato        %in% "DEFINITIVO"    &
-          Origen              %in% codigos.ana &
-          Destino             %in% codigos.ana
+          Origen  %in% codigos.ana &
+          Destino %in% codigos.ana
           ) 
-
-
-
 
 new.df.vuelos.nacionales
 
 ```
 
-Esto tiene otra cara, ahora tenemos $45024$ datos para analizar.
+Esto tiene otra cara, ahora tenemos $44.985$ datos para analizar.
 
 ```{r}
 # Unimos los datasets utilizando la funcion merge 
@@ -451,7 +450,7 @@ longitudes.destino  <- new.df.vuelos.nacionales$long.destino
 
 # Calculamos las distancias utilizando disHaversine
 # Pasandolas a Kilometros
-for (i in 1:45024){
+for (i in 1:44985){
   distancias <- c( distancias, 
                    (distHaversine(
                      c(latitudes.origenes[i],longitudes.origenes[i]),
@@ -473,81 +472,92 @@ Ya tenemos las distancias en Kilometros, calculadas en base a las coordenadas.
 
 ## Calculo de las Velocidades promedio
 
-Así como esta el dato de las horas, no podemos utilizarlos para calcular las velocidades. 
-Por suerte, estan en formato string y es facil reemplazar los `:` por `.`.
+Para poder calcular las velocidades es necesario tener los vuelos completos, es decir, la hora de despegue para elvuelo
+y su hora de aterrizaje. Claramente en  el dataset no hay un identificativo de cada vuelo, lo cual seria de mucha utilidad y el calculo seria una aproximación un tanto mas precisa, pero no es el caso.
 
-Por otro lado, tenemos hora de `despegue` o `aterrizaje` por lo que debemos identificar
-que el vuelo sea el mismo para saber cuando despego en un lugar (Horario de partida)
-y aterrizo en otro (Horario de llegada).
-
-Algo a notar, es que tenemos filas impares, por lo que, al parecer hay más 
-despegues que aterrizajes o al revez.
-
-Veamos esto.
+Para poder calcular las velocidades, necesitamos tener el tiempo en el cual sale o llega el avion en un formato que nos permita calcular una diferecia temporal y que sea luego utilizable a la hora del calculo. Para esto, vamos a usar la función `strptime`, esta funcion crea un horario segun un formato determinado que nosotros le digamos. 
 
 ```{r}
-aterrizajes <- new.df.vuelos.nacionales %>% filter(Tipo.de.Movimiento == "Aterrizaje")
-despegues <- new.df.vuelos.nacionales %>% filter(Tipo.de.Movimiento == "Despegue")
+#Agrego nueva columna a los datos con informacion temporal completa
 
-dim(aterrizajes)
-dim(despegues)
+# Primero "pegamos" la Fecha del vuelo con su horario
+horario <- paste( new.df.vuelos.nacionales$Fecha, new.df.vuelos.nacionales$Hora.UTC, sep=' ')
+# Utilizamos la funcion strptime para formatear este dato
+horario <- strptime(horario, format="%d/%m/%Y %H:%M")
 
+# Agregamos lo horarios a la columna Horario del dataframe.
+new.df.vuelos.nacionales <- new.df.vuelos.nacionales %>% 
+  mutate(
+    Horario = horario
+    )
+
+# Tomo Solo Aterrizajes
+aterrizajes <- new.df.vuelos.nacionales %>% 
+  filter(
+    distancia.km > 0 & Tipo.de.Movimiento=='Aterrizaje'
+    ) %>% 
+  select(
+    Horario, 
+    Origen, 
+    Destino, 
+    Tipo.de.Movimiento, 
+    Aeronave,
+    Pasajeros, 
+    distancia.km, 
+    lat.destino,
+    long.destino
+    )
+
+# Tomo Solo Despegues
+despegues <- new.df.vuelos.nacionales %>% 
+  filter(
+    distancia.km > 0 & Tipo.de.Movimiento=='Despegue'
+    ) %>% 
+  select(
+    Horario, 
+    Origen, 
+    Destino, 
+    Tipo.de.Movimiento, 
+    Aeronave,
+    Pasajeros, 
+    distancia.km,
+    lat.origen,
+    long.origen
+    )
+
+#Busco interseccion entre despegues y aterrizajes a partir de las ciudades origen/destino y el modelo de avion
+interseccion <- merge( x=despegues, y=aterrizajes, 
+                   by=c('Origen','Destino','Aeronave')
+                   )
+dim(interseccion)
+
+#Me quedo con los vuelos que hayan volado un rango de tiempo razonable
+interseccion <- interseccion %>%
+  mutate(
+    tiempo.vuelo = as.double(difftime( Horario.y, Horario.x, units="hours"))
+    )  %>% 
+  filter(
+    tiempo.vuelo > 0 & tiempo.vuelo < 5 
+    ) 
+
+
+dim(interseccion)
 ```
 
-Segun esto, tenemos mas despegues que aterrizajes... Esto es extraño, pero deberiamos quedarnos con un despegue por aterrizaje. 
-
-Empecemos con lo mas sencillo, que es pasar las Horas a `double`.
+Ya teniendo las distancias y los tiempos de vuelo, podemos pasar a calcular las velocidades promedio, en este caso de cada vuelo.
 
 ```{r}
-
-# Tomamos los datos de las horas 
-horas <- new.df.vuelos.nacionales %>%
-  select(Hora.UTC) %>%
-  mutate(numerico = as.double(gsub(":", ".", Hora.UTC)))
-
-horas
+interseccion <- interseccion %>% mutate(Velocidad.kmhs = distancia.km.x / tiempo.vuelo) 
+interseccion
 ```
-Notemos, que de esta manera nos queda el tiempo en horas, pero no del todo, pues
-los decimales me estan indicando la cantidad de minutos y no la cantidad de horas en decimal.
 
-Una de las cosas que podemos hacer es, dividir por el punto horas de minutos.
-Luego, pasamos las horas a minutos y a estos les sumamos los minutos restantes
-y luego pasamos estos minutos a horas.
 
-Hagamos esto.
+Y exportaremos este ultimo como `csv` para poder trabajar a futuro con este dataset.
 
 ```{r}
-hs  <- c()
-min <- c()
-
-hs.decimal <- c()
-
-hs_string <-  strsplit(new.df.vuelos.nacionales$Hora.UTC, ":")
-
-for (i in (1:length(hs_string))){
-  
-  hs[i]  <- as.double(hs_string[[i]][1])
-  min[i] <- as.double(hs_string[[i]][2])   
-  
-
-  hs.decimal[i] <- ( (hs[i] * 60) + min[i] )/60
-}
-
-hs.decimal[1:10]
-
-```
-Luego, la variable `hs.decimal` tiene las horas de salida o llegada pasadas a decimales.
-
-Sumamos estas al dataset con el que trabajabamos.
-
-```{r}
-new.df.vuelos.nacionales <- new.df.vuelos.nacionales %>%
-  mutate(horario.num = hs.decimal)
-
-new.df.vuelos.nacionales
+write.csv(interseccion, file = "vuelos_2021.csv", row.names = FALSE)
 ```
 
-Lo que nos faltaria es identificar que *despegue* coincide con que *aterrizaje*
 
 
 # Glosario de Variables

@@ -40,13 +40,13 @@ Cada link te lleva al `.nb.html` y de ahi se puede bajar el archivo correspondie
 ![De donde sacar el .Rmd](./descarga.jpg)
 
 * Consigna Tp : [Ver PDF](./consigna_tp.pdf)
-* R Notebook  (Parte 1):  [Ver](./TP_V2_final.nb.html)
+
 
 ## Datos Usados
 
 * [ANAC](./202109-informe-ministerio.csv)
 * [Codigos y Coordenadas](./sna_abril_2021_fixed_encoding.csv)
-
+* [csv usado para los grafos](./vuelos_2021.csv)
 
 
 

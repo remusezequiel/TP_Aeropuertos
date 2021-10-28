@@ -7,9 +7,13 @@ navbar:
     - text: "Datos y Referencias"
       href: refes.html
     - text: "Primera Parte"
-      href: primera_parte.html
+      href: TP_V2_final.nb.html
     - text: "Segunda Parte"
-      href: segunda_parte.html
+      icon: fa-laptop
+      menu:
+      - text: "Grafo de frecuencias"
+        href: grafo_viajes.nb.html     
+
 output_dir: "docs"
 
 
