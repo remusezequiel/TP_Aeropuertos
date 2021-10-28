@@ -39,14 +39,16 @@ Cada link te lleva al `.nb.html` y de ahi se puede bajar el archivo correspondie
 
 ![De donde sacar el .Rmd](./descarga.jpg)
 
+### LINKS a Consigna y .nb.html
 * Consigna Tp : [Ver PDF](./consigna_tp.pdf)
-
+* Primera Parte : [Ver](./docs/TP_V2_final.nb.html)
+* [Grafo Frecuencias] : [Ver](./docs/grafo_viajes.nb.html)
 
 ## Datos Usados
 
-* [ANAC](./202109-informe-ministerio.csv)
-* [Codigos y Coordenadas](./sna_abril_2021_fixed_encoding.csv)
-* [csv usado para los grafos](./vuelos_2021.csv)
+* [ANAC](.csv/202109-informe-ministerio.csv)
+* [Codigos y Coordenadas](.csv/sna_abril_2021_fixed_encoding.csv)
+* [csv usado para los grafos](.csv/vuelos_2021.csv)
 
 
 

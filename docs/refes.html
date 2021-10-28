@@ -33,6 +33,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -249,10 +251,21 @@ $(document).ready(function () {
   <a href="refes.html">Datos y Referencias</a>
 </li>
 <li>
-  <a href="primera_parte.html">Primera Parte</a>
+  <a href="TP_V2_final.nb.html">Primera Parte</a>
 </li>
-<li>
-  <a href="segunda_parte.html">Segunda Parte</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-laptop"></span>
+     
+    Segunda Parte
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="grafo_viajes.nb.html">Grafo de frecuencias</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -287,8 +300,24 @@ $(document).ready(function () {
 <h1>Referencias</h1>
 <ul>
 <li><a href="https://r-coder.com/funcion-merge-r/">merge</a>: De como utilizar la función <code>merge</code>.</li>
+<li><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">mutatin join</a> : Formas de unir varios dataframes segun dos coumnas.</li>
 <li><a href="https://cran.r-project.org/web/packages/geosphere/geosphere.pdf">geosphere</a>: PDF con informacion sobre las funciones incluidas en la libreria.</li>
+<li><a href="https://www.sharpsightlabs.com/blog/case-when-r/">case when</a> : Una buena explicación de como se usa y varios ejemplos de uso de esta función.</li>
+<li><a href="https://statisticsglobe.com/strptime-strftime-r-example">strptime</a>: Sobre que hace la funcion mas unos ejemplos.</li>
+<li><a href="https://www.youtube.com/watch?v=TeYHHR4wNPI">Video Matias (Profe)</a></li>
 </ul>
+<div id="para-viajes-mas-frecuentes" class="section level2">
+<h2>Para Viajes mas frecuentes</h2>
+<ul>
+<li><p><a href="https://www.data-imaginist.com/2017/ggraph-introduction-layouts/">Introducción a ggraph</a></p></li>
+<li><p><a href="https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/">ggthemes</a></p></li>
+<li><p><a href="https://igraph.org/r/">igraph</a> + <a href="https://rstudio-pubs-static.s3.amazonaws.com/74248_3bd99f966ed94a91b36d39d8f21e3dc3.html">otra opcion por acá</a></p></li>
+<li><p><a href="https://rdrr.io/cran/igraph/man/E.html">E()</a></p></li>
+<li><p><a href="https://www.datanalytics.com/2015/05/18/grafos-sobre-mapas/">Para grafos sobre mapas con ggmpas</a> : No me sirvio. Google ahora pide un registro pago para utilizar la libreria…</p></li>
+<li><p><a href="https://rpubs.com/Karenrojas/grafos">Sobre como hacer grafos</a> ## Para el analisis segun los año</p></li>
+<li><p><a href="http://www.sthda.com/english/wiki/ggplot2-density-plot-quick-start-guide-r-software-and-data-visualization">geom_density</a></p></li>
+</ul>
+</div>
 <div id="otros" class="section level2">
 <h2>Otros</h2>
 <ul>

@@ -26,7 +26,7 @@ Leamos y analisemos que tiene este `csv`.
 
 ```{r}
 # datos.ANAC := datos del csv original de aterrizajes y vuelos
-datos.ANAC <- read.csv('202109-informe-ministerio.csv', sep=';', encoding = 'UTF-8')
+datos.ANAC <- read.csv('./csv/202109-informe-ministerio.csv', sep=';', encoding = 'UTF-8')
 datos.ANAC
 colnames(datos.ANAC)
 ```
@@ -277,7 +277,7 @@ Ahora, lo que quedaria es unir los datasets de wikipedia y de *ANAC* y reinterpr
 luego poder calcular las distancias y las velocidades medias de cada vuelo.
 
 ```{r}
-data.nueva <- read.csv("sna_abril_2021_fixed_encoding.csv", encoding = 'utf-8')
+data.nueva <- read.csv("./csv/sna_abril_2021_fixed_encoding.csv", encoding = 'UTF-8')
 data.nueva
 
 ```
