@@ -20,6 +20,7 @@ tags: ["R Markdown", "plot", "regression"]
 
 # Referencias
 
+## Para la Primera Parte
 
 * [merge](https://r-coder.com/funcion-merge-r/): De como utilizar la función `merge`.
 * [mutatin join](https://dplyr.tidyverse.org/reference/mutate-joins.html) : Formas de unir varios dataframes segun dos coumnas.
@@ -31,24 +32,33 @@ PDF con informacion sobre las funciones incluidas en la libreria.
 
 ## Para Viajes mas frecuentes
 
+* [Geocomunication with R](https://geocompr.robinlovelace.net/index.html)
 * [Introducción a ggraph](https://www.data-imaginist.com/2017/ggraph-introduction-layouts/)
 * [ggthemes](https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/)
 * [igraph](https://igraph.org/r/) + [otra opcion por acá](https://rstudio-pubs-static.s3.amazonaws.com/74248_3bd99f966ed94a91b36d39d8f21e3dc3.html)
 * [E()](https://rdrr.io/cran/igraph/man/E.html)
 * [Para grafos sobre mapas con ggmpas](https://www.datanalytics.com/2015/05/18/grafos-sobre-mapas/) : No me sirvio. Google ahora pide un registro pago para utilizar la libreria... 
 * [Sobre como hacer grafos](https://rpubs.com/Karenrojas/grafos)
-## Para el analisis segun los año
+* [Galeria de Grafos](https://www.r-graph-gallery.com/248-igraph-plotting-parameters.html)
+* [Connection maps](https://www.r-graph-gallery.com/how-to-draw-connecting-routes-on-map-with-r-and-great-circles.html)
+* [De como funciona map](https://eriqande.github.io/rep-res-web/lectures/making-maps-with-R.html)
 
+----------
+
+## Para el analisis segun los año
 * [geom_density](http://www.sthda.com/english/wiki/ggplot2-density-plot-quick-start-guide-r-software-and-data-visualization)
 
+----------
 
 ## Otros
 * [Blogdown](https://bookdown.org/yihui/blogdown/) : En principio ibamos a utilizar 
 blogdown, pero se nos complico la subida a github, ya que no tubimos tiempo de analizar como funciona Jekill. Dejamos este acá para no olvidarlo.  Acá  hay un [Tutorial](https://www.caitlincasar.com/post/blogdown/) donde se explica como subir a github una pagina de este tipo, pero no funciono del todo.
+* [50 Visuales en ggplot](http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html)
+* [De como funcionan las Chunk options](https://yihui.org/knitr/options/)
 
+----------
 
 # Datos 
-
 * [Datos Pagina Gobierno](./202109-informe-misisterio.csv)
 * [Los otros datos adicionales](./sna_abril_2021_fixed_encoding.csv)
 * [Pagina de Wikipedia](https://en.wikipedia.org/wiki/List_of_airports_in_Argentina)

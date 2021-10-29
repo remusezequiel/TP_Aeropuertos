@@ -84,35 +84,14 @@ plot.igraph( grafo,
 
 En el grafo se puede visualizar que la mayoria de los viajes salen o de `EZE` o de `AER`. Entonces, tendria sentido preguntarse si hay alguna diferencia entre los vuelos que salen de `EZE` (o llegan) y los de `AER`.
 
-Tomemos dos dos dataframes distintos, uno con los origenes en `EZE` y otro en `AER`
 
-
-
-```{r}
-graph <- graph_from_data_frame(frec.viajes)
-ggraph(graph, layout = 'kk') +  geom_edge_link(aes(colour = factor(n))) + geom_node_point()
-```
-
-
-```{r}
-layout <- create_layout(graph, layout = 'drl')
-
-dendrogram <- as.dendrogram(hclust(dist(frec.viajes$n)))
-ggraph(dendrogram, 'dendrogram') + 
-    geom_edge_elbow()
-
-
-```
-
-
-Hagamos el primer grafo, pero tomando un origen y viendo que pasa con cada uno de estos.
-
+Hagamos el grafo, pero tomando un origen y viendo que pasa con cada uno de estos.
 ```{r}
 ## La idea de este codigo es que cuando ustedes lo tengan a mano
 ## si oueden correrlo con , fig.show='animate' ouedan ver la 
 ## Secuencia de como esta cada uno relacionado con todos.
 ## A mi me falto tener instalado ffmep en windows cosa 
-## que se me complico instalar
+## que se me complico instalar antes de la entrega
 grafica.grafo.origen <- function(df, filtro){
   # Filtra el dataset  
   dt <- df %>% filter(Origen == filtro)
@@ -135,16 +114,130 @@ for (i in (1:4)){
   grafica.grafo.origen(frec.viajes, nombres[i])  
 }
 
+```
 
+## ¿Como montar en un mapa un grafo?
 
+Necesitaria agregar las coordenadas de origenes y destino. 
+
+```{r}
+coord.origen <- df.vuelos %>% select(Origen, long.origen, lat.origen)
+orig  <- table(coord.origen$Origen)
+longs <- table(coord.origen$long.origen)
+
+dim(orig)
+dim(longs)
+orig
+longs
+```
+
+Vemos que, al parecer, tenemos algunos problemas con las coordenadas, pues no tenemos iguales longitudes de origenes con longitudes de origenes (Deberiamos ver porque pasa esto). 
+
+Tomemos entonces el archivo viejo sobre coordenadas en ANAC para unirlo con el dataset de frecuencias.
+
+```{r}
+data.coordenadas <- read.csv("./csv/sna_abril_2021_fixed_encoding.csv", encoding = 'UTF-8')
+data.coordenadas <- data.coordenadas %>%
+  select(fna, ana, x, y) %>%
+  rename(
+    aeropuerto  = fna,
+    codigo.ANAC = ana,
+    longitud = x,
+    latitud  = y
+    )
+
+df.origen <- merge( x=frec.viajes, y=data.coordenadas, 
+                    by.x='Origen', by.y='codigo.ANAC')
+
+df.destino <- merge(x=frec.viajes, y=data.coordenadas,
+                    by.x='Destino', by.y='codigo.ANAC')
+
+df.destino <- df.destino %>% arrange(Origen, n )
+df.origen  <- df.origen  %>% arrange(Origen, n )
+
+new.df.frec.viajes <- df.origen %>% 
+  mutate(
+    lat.des  = df.destino$latitud,
+    long.des = df.destino$longitud
+  ) %>%
+  rename(
+    lat.or  = latitud,
+    long.or = longitud,
+  )
+
+new.df.frec.viajes
+```
+
+Ahora si tenemos todo como queriamos. Sabiendo que tenemos $35$ Origenes posibles, intentemos
+armar los grafos para cada aeropuerto representandolo en un mapa. Esto nos permitira visualizar de una mejor 
+manera lo que pasa entre los enlaces de aeropuetos.
+
+```{r}
+colors()[1]
+```
+
+```{r, fig.height=20, fig.width=15 }
+
+library(ggmap)
+library(maps)
+library(mapdata)
+library(geosphere)
+
+# Tomo datos coordenados de argentina, segun el dataframe dado por map_data
+arg <- map_data("world", region = "Argentina")
+
+# Limites coordenados aproximados de Argentina
+# los calculo como el maximo y el minimo de las coordenadas en el dataframe
+xlim <- c(min(arg$long), max(arg$long))
+ylim <- c(min(arg$lat), max(arg$lat))
+
+# Origen (string) identificara el origen segun el dataframe que tenemos
+# El color (string) sera un color que represente a este origen
+ploteo <- function(origen, color) {
+  
+  df.Origen <- new.df.frec.viajes %>% 
+  filter(
+    Origen == origen
+    ) %>%
+  select( long.or, lat.or, long.des, lat.des, n)
+
+  for (i in (1:length(df.Origen$long.or))){
+    
+    inter <- gcIntermediate(c(df.Origen$long.or[i], df.Origen$lat.or[i]), 
+                            c(df.Origen$long.des[i], df.Origen$lat.des[i]), 
+                            n = df.Origen$n[i]*3, 
+                            addStartEnd=TRUE,
+                            breakAtDateLine=T
+                          )
+           
+    lines(inter, col=color, lwd=df.Origen$n[i]/100)  
+  }
+}
+
+# Creo un mapa para la Argentina
+map( 'world', col="#cfcfcf", fill=TRUE, bg="white", lwd=0.05, xlim=xlim, ylim=ylim)
+
+# Creo un vector con los origenes segun la variable orig usada mas arriba
+vec.origenes <- names(orig)
+
+for (i in (1:length(vec.origenes))){
+  ploteo(vec.origenes[i], colors()[i+7])
+  cat("Origen: ", vec.origenes[i], "color identificador : ", colors()[i+10], "\n")
+  }
+
+points(x=new.df.frec.viajes$long.des, 
+       y=new.df.frec.viajes$lat.des, 
+       col="slateblue", cex=2, pch=20)
+
+text(new.df.frec.viajes$Destino, 
+     x=new.df.frec.viajes$long.des, 
+     y=new.df.frec.viajes$lat.des,  
+     col="#ff8142", cex=1, pos=4)
 ```
 
 
 
-
-
-
-
+Faltaria emprolijar.
 
 
 
