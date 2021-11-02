@@ -11,6 +11,8 @@ navbar:
     - text: "Segunda Parte"
       icon: fa-laptop
       menu:
+      - text: "Ley de Bernford"
+        href: ley_ber.html     
       - text: "Grafo de frecuencias"
         href: grafo_viajes.html     
 

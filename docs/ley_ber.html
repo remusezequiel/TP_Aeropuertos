@@ -9,10 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Grupo 8" />
+<meta name="author" content="Grupo 8: Cosarinsky Matias, Remus Ezequiel" />
 
 
-<title>Datos TP y Aclaraciones</title>
+<title>TP - Aeropuertos</title>
 
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -33,6 +33,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -282,11 +284,17 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Datos TP y Aclaraciones</h1>
-<h4 class="author">Grupo 8</h4>
+<h1 class="title toc-ignore">TP - Aeropuertos</h1>
+<h3 class="subtitle">Ley de Benford</h3>
+<h4 class="author">Grupo 8: Cosarinsky Matias, Remus Ezequiel</h4>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#ley-de-benford">Ley de Benford</a></li>
+</ul>
+</div>
 
 <style type="text/css">
 .title {
@@ -298,48 +306,40 @@ $(document).ready(function () {
 }
 
 </style>
-<div id="archivos-tp-y-aclaraciones" class="section level1">
-<h1>Archivos TP y Aclaraciones</h1>
-<div id="aclaraciones" class="section level2">
-<h2>Aclaraciones</h2>
-<p>En las pestañas de arriba se encuentran separadas las partes referidas al <strong>TP</strong>. Por otro lado, abajo se alojan tanto los <code>csv</code> utilizados como tambien los archivos en .nb.html.</p>
-<p>La idea de la pagina es, mas que nada para separar el trabajo en si en sus partes y así sea más facil y organizada la lectura.</p>
-<p>La pagina basicamente es una “imitación” de la pagina de la materia. Estos es fuimos al Github de guillermo, clonamos y sacamos la carpeta <code>site_libs</code>.</p>
-</div>
-<div id="archivos-del-tp" class="section level2">
-<h2>Archivos del TP</h2>
-<p>Los archivos en <code>.Rmd</code> estan en los links que dejamos acá apuntados. Cada link te lleva al <code>.nb.html</code> y de ahi se puede bajar el archivo correspondiente a cada parte.</p>
-<div class="figure">
-<img src="descarga.jpg" alt="" />
-<p class="caption">De donde sacar el .Rmd</p>
-</div>
-<div id="links-a-consigna-y-.nb.html" class="section level3">
-<h3>LINKS a Consigna y .nb.html</h3>
-<ul>
-<li>Consigna Tp : <a href="./consigna_tp.pdf">Ver PDF</a></li>
-<li>Primera Parte : <a href="./TP_V2_final.nb.html">Ver</a></li>
-<li>Grafo Frecuencias : <a href="./grafo_viajes.nb.html">Ver</a></li>
-<li>Vuelos en en tiempo : <a href="./cantidad_vuelos.nb.html">Ver</a></li>
-<li>Ley Bernford : <a href="./ley_ber.nb.html">Ver</a></li>
-</ul>
-</div>
-</div>
-<div id="datos-usados" class="section level2">
-<h2>Datos Usados</h2>
-<ul>
-<li><a href="./csv/202109-informe-ministerio.csv">ANAC</a></li>
-<li><a href="./csv/sna_abril_2021_fixed_encoding.csv">Codigos y Coordenadas</a></li>
-<li><a href="./csv/vuelos_2021.csv">csv usado para los grafos</a></li>
-<li><a href="https://drive.google.com/file/d/1Ggj_c25Cvv5ZOdofC6P2BKuKz2DTL33W/view?usp=sharing">Datos del 2014 al 2020</a></li>
-</ul>
-</div>
-<div id="autores" class="section level2">
-<h2>Autores:</h2>
-<ul>
-<li>Ezequiel Remus : <a href="mailto:ezequielremus@gmail.com" class="email">ezequielremus@gmail.com</a></li>
-<li>Matias Cosarinsky: <a href="mailto:matias.cosarinsky@gmail.com" class="email">matias.cosarinsky@gmail.com</a></li>
-</ul>
-</div>
+<div id="ley-de-benford" class="section level1">
+<h1>Ley de Benford</h1>
+<p>Por curiosidad pensamos ver si las distancias recorridas por los vuelos siguen la ley de Benford. Para ello tomamos los valores los valores no repetidos entre todas las y graficamos la frecuencia de su primer dígito.</p>
+<pre class="r"><code>library(ggplot2)</code></pre>
+<pre class="r"><code>#Benford&#39;s Law
+# Leo el csv con los datos
+df.vuelos &lt;- read.csv(&quot;./csv/vuelos_2021.csv&quot;)
+
+
+#tomamos las distancias positivas y nos quedamos con los valores unicos
+distancias_pos &lt;- df.vuelos$distancia.km.x[which(df.vuelos$distancia.km.x &gt; 0)]
+unicas.dist    &lt;- unique(as.integer(distancias_pos))
+
+length(unicas.dist)
+## [1] 208
+
+#dividimos en los dígitos(transformando primero en un vector de caracteres) y nos quedamos con el primero usando function(x) x[1]
+primer.digito.unicos &lt;- sapply(strsplit(as.character(unicas.dist), split=&#39;&#39;), function(x) x[1])
+
+#ahora construimos un data frame con las proporciones de los dígitos 
+df.dist &lt;- as.data.frame(prop.table(table(primer.digito.unicos)))
+df.dist$primer.digito.unicos &lt;- as.integer(df.dist$primer.digito.unicos)
+
+y &lt;- function(x) log(1+1/x, 10)
+
+#realizamos el gráfico
+ggplot(df.dist, mapping=aes(x=primer.digito.unicos, y=Freq)) +
+  geom_bar(stat=&#39;identity&#39;, fill=&#39;blue&#39;) +
+  labs(x=&#39;Dígito&#39;, y=&#39;Proporción de apariciones&#39;, title=&#39;Ley de Benford en distancias&#39;) +
+  theme(plot.title = element_text(hjust = 0.5))+
+   geom_line(mapping = aes(y = y(primer.digito.unicos)),size=1.3) +
+  scale_x_continuous(breaks=1:9, labels=c(&#39;1&#39;,&#39;2&#39;,&#39;3&#39;,&#39;4&#39;,&#39;5&#39;,&#39;6&#39;,&#39;7&#39;,&#39;8&#39;,&#39;9&#39;))</code></pre>
+<p><img src="ley_ber_files/figure-html/unnamed-chunk-2-1.png" width="672" /> A partir del gráfico podemos ver que la distancia recorrida por los vuelos, que vendría a ser la distancia entre dos ciudades, se adapta bastante bien a lo establecido por la ley de Benford, salvo para los dígitos 5,7 y 9 que aparecen en mayor proporción a lo esperado.</p>
+<p>Tenemos 208 distancias diferentes, puede que con más observaciones este comportamiento sea aún más evidente pero para esto necesitaríamos vuelos entre ciudades de más países.</p>
 </div>
 
 
