@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Grupo 8: Cosarinsky Matias, Remus Ezequiel, Reyes Andres" />
+<meta name="author" content="Grupo 8: Cosarinsky Matias, Remus Ezequiel" />
 
 
 <title>TP - Aeropuertos</title>
@@ -283,7 +283,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">TP - Aeropuertos</h1>
 <h3 class="subtitle">Laboratorio de Datos</h3>
-<h4 class="author">Grupo 8: Cosarinsky Matias, Remus Ezequiel, Reyes Andres</h4>
+<h4 class="author">Grupo 8: Cosarinsky Matias, Remus Ezequiel</h4>
 
 </div>
 
@@ -375,7 +375,7 @@ plot.igraph( grafo,
              edge.width = E(grafo)/30)</code></pre>
 <p><img src="grafo_viajes_files/figure-html/Fig1-1.png" width="2880" /></p>
 <p>En el grafo se puede visualizar que la mayoria de los viajes salen o de <code>EZE</code> o de <code>AER</code>. Entonces, tendria sentido preguntarse si hay alguna diferencia entre los vuelos que salen de <code>EZE</code> (o llegan) y los de <code>AER</code>.</p>
-<p>Hagamos el grafo, pero tomando un origen y viendo que pasa con cada uno de estos.</p>
+<p>Para esto, se pueden hacer grafos centrandonos solo en los vuelos que salen de <code>EZE</code> y de <code>AER</code>.</p>
 <pre class="r"><code>## La idea de este codigo es que cuando ustedes lo tengan a mano
 ## si oueden correrlo con , fig.show=&#39;animate&#39; ouedan ver la 
 ## Secuencia de como esta cada uno relacionado con todos.
@@ -397,12 +397,17 @@ grafica.grafo.origen &lt;- function(df, filtro){
              edge.width = E(gf)/30)
   }
 
-nombres &lt;- names(table(frec.viajes$Origen))
+# nombres &lt;- names(table(frec.viajes$Origen))
 
-for (i in (1:4)){
-  grafica.grafo.origen(frec.viajes, nombres[i])  
-}</code></pre>
-<p><img src="grafo_viajes_files/figure-html/unnamed-chunk-3-1.png" width="672" /><img src="grafo_viajes_files/figure-html/unnamed-chunk-3-2.png" width="672" /><img src="grafo_viajes_files/figure-html/unnamed-chunk-3-3.png" width="672" /><img src="grafo_viajes_files/figure-html/unnamed-chunk-3-4.png" width="672" /></p>
+#for (i in (1:4)){
+#  grafica.grafo.origen(frec.viajes, nombres[i])  
+#}
+
+grafica.grafo.origen(frec.viajes, &#39;EZE&#39;)</code></pre>
+<p><img src="grafo_viajes_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>grafica.grafo.origen(frec.viajes, &#39;AER&#39;)</code></pre>
+<p><img src="grafo_viajes_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<p>En estos grafos, la frecuencia esta identificada por el tamaño de las letras.</p>
 </div>
 <div id="como-montar-en-un-mapa-un-grafo" class="section level2">
 <h2>¿Como montar en un mapa un grafo?</h2>
@@ -481,8 +486,6 @@ new.df.frec.viajes</code></pre>
   </script>
 </div>
 <p>Ahora si tenemos todo como queriamos. Sabiendo que tenemos <span class="math inline">\(35\)</span> Origenes posibles, intentemos armar los grafos para cada aeropuerto representandolo en un mapa. Esto nos permitira visualizar de una mejor manera lo que pasa entre los enlaces de aeropuetos.</p>
-<pre class="r"><code>colors()[1]
-## [1] &quot;white&quot;</code></pre>
 <pre class="r"><code>
 library(ggmap)
 ## Google&#39;s Terms of Service: https://cloud.google.com/maps-platform/terms/.
@@ -499,85 +502,87 @@ arg &lt;- map_data(&quot;world&quot;, region = &quot;Argentina&quot;)
 xlim &lt;- c(min(arg$long), max(arg$long))
 ylim &lt;- c(min(arg$lat), max(arg$lat))
 
+
+
 # Origen (string) identificara el origen segun el dataframe que tenemos
 # El color (string) sera un color que represente a este origen
 ploteo &lt;- function(origen, color) {
   
   df.Origen &lt;- new.df.frec.viajes %&gt;% 
-  filter(
-    Origen == origen
-    ) %&gt;%
-  select( long.or, lat.or, long.des, lat.des, n)
-
+    filter( Origen == origen ) %&gt;%
+    select( long.or, lat.or, long.des, lat.des, n)
+  
+    
   for (i in (1:length(df.Origen$long.or))){
     
+    # LLamo a la funcion gcIntermediate  la cual permite identificar
+    # y dibujar tanto los puntos de origen destino como cualquier cosa
+    # dado un radio n dentre del mapa+
     inter &lt;- gcIntermediate(c(df.Origen$long.or[i], df.Origen$lat.or[i]), 
                             c(df.Origen$long.des[i], df.Origen$lat.des[i]), 
-                            n = df.Origen$n[i]*3, 
+                            n = 1000, 
                             addStartEnd=TRUE,
-                            breakAtDateLine=T
+                            breakAtDateLine=T, sp=TRUE
                           )
-           
-    lines(inter, col=color, lwd=df.Origen$n[i]/100)  
+    
+    # Dibujo la linea que conecta a los aeropuertos
+    # donde el ancho de esta tomara en valor reducido en 
+    # proporciones iguales y asi identificar con su ancho la frecuencia
+    # de vuelos existentes entre estos tramos.
+    lines(inter, col=color, lwd=df.Origen$n[i]/70) 
   }
+  
 }
 
-# Creo un mapa para la Argentina
-map( &#39;world&#39;, col=&quot;#cfcfcf&quot;, fill=TRUE, bg=&quot;white&quot;, lwd=0.05, xlim=xlim, ylim=ylim)
 
-# Creo un vector con los origenes segun la variable orig usada mas arriba
+
+Dibujar.Mapa &lt;- function(vector.origenes) {
+  # Creo un mapa para la Argentina
+  maps::map(&#39;world&#39;, col=&quot;#ebeded&quot;, fill=TRUE, bg=&quot;white&quot;, lwd=0.05, xlim=xlim, ylim=ylim)
+
+  # Creo un vector con los origenes segun la variable orig usada mas arriba
+
+  colores &lt;- c()
+  
+  for (i in (1:length(vector.origenes))){
+    
+    colores &lt;- c(colores, colors()[i*5])
+    ploteo(vector.origenes[i], colors()[i*5])
+  
+  }
+
+  legend(&#39;topleft&#39;, 
+          legend=c(vector.origenes),
+          col=c(colores), 
+          lty = 1:2, cex=1.3)
+
+  points(x=new.df.frec.viajes$long.des, 
+         y=new.df.frec.viajes$lat.des, 
+         col=&quot;slateblue&quot;, cex=2, pch=20)
+
+  text(new.df.frec.viajes$Destino, 
+        x=new.df.frec.viajes$long.des, 
+        y=new.df.frec.viajes$lat.des,  
+        col=&quot;#ff8142&quot;, cex=1, pos=4)
+}
+
+# Creo un vector con todos los origenes segun la variable utilizada
+# en el chunk anterior
 vec.origenes &lt;- names(orig)
 
-for (i in (1:length(vec.origenes))){
-  ploteo(vec.origenes[i], colors()[i+7])
-  cat(&quot;Origen: &quot;, vec.origenes[i], &quot;color identificador : &quot;, colors()[i+10], &quot;\n&quot;)
-  }
-## Origen:  AER color identificador :  aquamarine3 
-## Origen:  BAR color identificador :  aquamarine4 
-## Origen:  BCA color identificador :  azure 
-## Origen:  CAT color identificador :  azure1 
-## Origen:  CBA color identificador :  azure2 
-## Origen:  CHP color identificador :  azure3 
-## Origen:  CRR color identificador :  azure4 
-## Origen:  CRV color identificador :  beige 
-## Origen:  DOZ color identificador :  bisque 
-## Origen:  DRY color identificador :  bisque1 
-## Origen:  ECA color identificador :  bisque2 
-## Origen:  ESQ color identificador :  bisque3 
-## Origen:  EZE color identificador :  bisque4 
-## Origen:  GAL color identificador :  black 
-## Origen:  GRA color identificador :  blanchedalmond 
-## Origen:  IGU color identificador :  blue 
-## Origen:  JUA color identificador :  blue1 
-## Origen:  JUJ color identificador :  blue2 
-## Origen:  MDP color identificador :  blue3 
-## Origen:  NEU color identificador :  blue4 
-## Origen:  OSA color identificador :  blueviolet 
-## Origen:  PAR color identificador :  brown 
-## Origen:  POS color identificador :  brown1 
-## Origen:  ROS color identificador :  brown2 
-## Origen:  SAL color identificador :  brown3 
-## Origen:  SDE color identificador :  brown4 
-## Origen:  SIS color identificador :  burlywood 
-## Origen:  SRA color identificador :  burlywood1 
-## Origen:  SVO color identificador :  burlywood2 
-## Origen:  TRC color identificador :  burlywood3 
-## Origen:  TRE color identificador :  burlywood4 
-## Origen:  TUC color identificador :  cadetblue 
-## Origen:  UIS color identificador :  cadetblue1 
-## Origen:  USU color identificador :  cadetblue2 
-## Origen:  VIE color identificador :  cadetblue3
-
-points(x=new.df.frec.viajes$long.des, 
-       y=new.df.frec.viajes$lat.des, 
-       col=&quot;slateblue&quot;, cex=2, pch=20)
-
-text(new.df.frec.viajes$Destino, 
-     x=new.df.frec.viajes$long.des, 
-     y=new.df.frec.viajes$lat.des,  
-     col=&quot;#ff8142&quot;, cex=1, pos=4)</code></pre>
+# LLamo a la funcion encargada de dibujar el mapa
+# Pasandole todos los origenes que se relacionan
+Dibujar.Mapa(vec.origenes)</code></pre>
+<p><img src="grafo_viajes_files/figure-html/unnamed-chunk-6-1.png" width="1440" /></p>
+<p>Con la misma idea que en el grafo, aca solo utilizamos el ancho de la linea para identificar que viaje tiene mas frecuencia.</p>
+<p>Se puede ver claramente, que el vuelo mas requerido dentro de los vuelos regulares internos en el 2021 fue el viaje a bariloche, tanto desde <code>EZE</code> como de <code>AER</code>.</p>
+<p>Si quisiesemos solo ver que pasa con un origen en particular (es decir que pasa con un solo aeropuerto), solo debemos utilizar la función <code>Dibujar.Mapa</code>pasandole solo el origen requerido.</p>
+<p>En este caso, al igual que antes, comparemos como se relacionan los aeropuertos con <code>EZE</code> y <code>AER</code></p>
+<pre class="r"><code>
+Dibujar.Mapa(c(&quot;AER&quot;, &quot;EZE&quot;))</code></pre>
 <p><img src="grafo_viajes_files/figure-html/unnamed-chunk-7-1.png" width="1440" /></p>
-<p>Faltaria emprolijar.</p>
+<p>Este es mucho mas util para ver que vuelos son requeridos por un aeropuerto en particular o para comparar entre dos aeropuertos, como hicimos en este caso.</p>
+<p>Se puede ver claramente que si bien hay una gran frecuencia de viajes desde <code>AER</code> <span class="math inline">\(\rightarrow\)</span> <code>BAR</code> la frecuencia con la que estos viajes es requerido es mayo a la relacion <code>EZE</code> <span class="math inline">\(\rightarrow\)</span> <code>BAR</code>. La misma tendencia se ve en los viajes a Cordoba. Sin embargo, se nota la tendencia inversa respecto de los viajes a Ushuaia.</p>
 </div>
 </div>
 

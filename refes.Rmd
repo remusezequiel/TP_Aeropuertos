@@ -62,3 +62,5 @@ blogdown, pero se nos complico la subida a github, ya que no tubimos tiempo de a
 * [Datos Pagina Gobierno](./202109-informe-misisterio.csv)
 * [Los otros datos adicionales](./sna_abril_2021_fixed_encoding.csv)
 * [Pagina de Wikipedia](https://en.wikipedia.org/wiki/List_of_airports_in_Argentina)
+* [csv usado para los grafos](./csv/vuelos_2021.csv)
+* [Datos del 2014 al 2020](https://drive.google.com/file/d/1Ggj_c25Cvv5ZOdofC6P2BKuKz2DTL33W/view?usp=sharing)

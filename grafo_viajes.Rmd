@@ -1,6 +1,6 @@
 ---
 title: "TP -  Aeropuertos"
-author: "Grupo 8:  Cosarinsky Matias, Remus Ezequiel, Reyes Andres "
+author: "Grupo 8:  Cosarinsky Matias, Remus Ezequiel"
 date: ""
 output:
   html_document:
@@ -84,8 +84,8 @@ plot.igraph( grafo,
 
 En el grafo se puede visualizar que la mayoria de los viajes salen o de `EZE` o de `AER`. Entonces, tendria sentido preguntarse si hay alguna diferencia entre los vuelos que salen de `EZE` (o llegan) y los de `AER`.
 
+Para esto, se pueden hacer grafos centrandonos solo en los vuelos que salen de `EZE` y de  `AER`.
 
-Hagamos el grafo, pero tomando un origen y viendo que pasa con cada uno de estos.
 ```{r}
 ## La idea de este codigo es que cuando ustedes lo tengan a mano
 ## si oueden correrlo con , fig.show='animate' ouedan ver la 
@@ -108,13 +108,18 @@ grafica.grafo.origen <- function(df, filtro){
              edge.width = E(gf)/30)
   }
 
-nombres <- names(table(frec.viajes$Origen))
+# nombres <- names(table(frec.viajes$Origen))
 
-for (i in (1:4)){
-  grafica.grafo.origen(frec.viajes, nombres[i])  
-}
+#for (i in (1:4)){
+#  grafica.grafo.origen(frec.viajes, nombres[i])  
+#}
+
+grafica.grafo.origen(frec.viajes, 'EZE')
+grafica.grafo.origen(frec.viajes, 'AER')
 
 ```
+
+En estos grafos, la frecuencia esta identificada por el tamaño de las letras.
 
 ## ¿Como montar en un mapa un grafo?
 
@@ -172,9 +177,6 @@ Ahora si tenemos todo como queriamos. Sabiendo que tenemos $35$ Origenes posible
 armar los grafos para cada aeropuerto representandolo en un mapa. Esto nos permitira visualizar de una mejor 
 manera lo que pasa entre los enlaces de aeropuetos.
 
-```{r}
-colors()[1]
-```
 
 ```{r, fig.height=20, fig.width=15 }
 
@@ -191,53 +193,104 @@ arg <- map_data("world", region = "Argentina")
 xlim <- c(min(arg$long), max(arg$long))
 ylim <- c(min(arg$lat), max(arg$lat))
 
+
+
 # Origen (string) identificara el origen segun el dataframe que tenemos
 # El color (string) sera un color que represente a este origen
 ploteo <- function(origen, color) {
   
   df.Origen <- new.df.frec.viajes %>% 
-  filter(
-    Origen == origen
-    ) %>%
-  select( long.or, lat.or, long.des, lat.des, n)
-
+    filter( Origen == origen ) %>%
+    select( long.or, lat.or, long.des, lat.des, n)
+  
+    
   for (i in (1:length(df.Origen$long.or))){
     
+    # LLamo a la funcion gcIntermediate  la cual permite identificar
+    # y dibujar tanto los puntos de origen destino como cualquier cosa
+    # dado un radio n dentre del mapa+
     inter <- gcIntermediate(c(df.Origen$long.or[i], df.Origen$lat.or[i]), 
                             c(df.Origen$long.des[i], df.Origen$lat.des[i]), 
-                            n = df.Origen$n[i]*3, 
+                            n = 1000, 
                             addStartEnd=TRUE,
-                            breakAtDateLine=T
+                            breakAtDateLine=T, sp=TRUE
                           )
-           
-    lines(inter, col=color, lwd=df.Origen$n[i]/100)  
+    
+    # Dibujo la linea que conecta a los aeropuertos
+    # donde el ancho de esta tomara en valor reducido en 
+    # proporciones iguales y asi identificar con su ancho la frecuencia
+    # de vuelos existentes entre estos tramos.
+    lines(inter, col=color, lwd=df.Origen$n[i]/70) 
   }
+  
 }
 
-# Creo un mapa para la Argentina
-map( 'world', col="#cfcfcf", fill=TRUE, bg="white", lwd=0.05, xlim=xlim, ylim=ylim)
 
-# Creo un vector con los origenes segun la variable orig usada mas arriba
-vec.origenes <- names(orig)
 
-for (i in (1:length(vec.origenes))){
-  ploteo(vec.origenes[i], colors()[i+7])
-  cat("Origen: ", vec.origenes[i], "color identificador : ", colors()[i+10], "\n")
+Dibujar.Mapa <- function(vector.origenes) {
+  # Creo un mapa para la Argentina
+  maps::map('world', col="#ebeded", fill=TRUE, bg="white", lwd=0.05, xlim=xlim, ylim=ylim)
+
+  # Creo un vector con los origenes segun la variable orig usada mas arriba
+
+  colores <- c()
+  
+  for (i in (1:length(vector.origenes))){
+    
+    colores <- c(colores, colors()[i*5])
+    ploteo(vector.origenes[i], colors()[i*5])
+  
   }
 
-points(x=new.df.frec.viajes$long.des, 
-       y=new.df.frec.viajes$lat.des, 
-       col="slateblue", cex=2, pch=20)
+  legend('topleft', 
+          legend=c(vector.origenes),
+          col=c(colores), 
+          lty = 1:2, cex=1.3)
 
-text(new.df.frec.viajes$Destino, 
-     x=new.df.frec.viajes$long.des, 
-     y=new.df.frec.viajes$lat.des,  
-     col="#ff8142", cex=1, pos=4)
+  points(x=new.df.frec.viajes$long.des, 
+         y=new.df.frec.viajes$lat.des, 
+         col="slateblue", cex=2, pch=20)
+
+  text(new.df.frec.viajes$Destino, 
+        x=new.df.frec.viajes$long.des, 
+        y=new.df.frec.viajes$lat.des,  
+        col="#ff8142", cex=1, pos=4)
+}
+
+# Creo un vector con todos los origenes segun la variable utilizada
+# en el chunk anterior
+vec.origenes <- names(orig)
+
+# LLamo a la funcion encargada de dibujar el mapa
+# Pasandole todos los origenes que se relacionan
+Dibujar.Mapa(vec.origenes)
+
 ```
 
+Con la misma idea que en el grafo, aca solo utilizamos el ancho de la linea para identificar que viaje tiene mas frecuencia.
+
+Se puede ver claramente, que el vuelo mas requerido dentro de los vuelos regulares internos en el 2021
+fue el viaje a bariloche, tanto desde `EZE` como de `AER`. 
+
+Si quisiesemos solo ver que pasa con un origen en particular (es decir que pasa con un solo aeropuerto), solo debemos utilizar la función `Dibujar.Mapa`pasandole solo el origen requerido.
+
+En este caso, al igual que antes, comparemos como se relacionan los aeropuertos con `EZE` y `AER`
+
+```{r, , fig.height=20, fig.width=15}
+
+Dibujar.Mapa(c("AER", "EZE"))
 
 
-Faltaria emprolijar.
+
+```
+
+Este es mucho mas util para ver que vuelos son requeridos por un aeropuerto en particular o para comparar entre dos aeropuertos, como hicimos en este caso. 
+
+Se puede ver claramente que si bien hay una gran frecuencia de viajes desde `AER` $\rightarrow$ `BAR` la frecuencia 
+con la que estos viajes es requerido es mayo a la relacion `EZE` $\rightarrow$ `BAR`. La misma tendencia se ve en los viajes a Cordoba. Sin embargo, se nota la tendencia inversa respecto de los viajes a Ushuaia.
+
+
+
 
 
 

@@ -25,12 +25,14 @@ knitr::opts_chunk$set(collapse = TRUE)
 
 ## Aclaraciones
 
-En las pestañas arribla, se encontrara un resumen de como pensamos los ejercicios y algunas concluciones, luego el trabajo "entero" se encuentra en los codigos.
+En las pestañas de arriba se encuentran separadas las partes referidas al **TP**.
+Por otro lado, abajo se alojan tanto los `csv` utilizados como tambien los archivos
+en .nb.html.
 
-Tambien hay una pestaña de referencias donde aparecen las cosas que fuimos empleando. 
+La idea de la pagina es, mas que nada para separar el trabajo en si en sus partes y así sea más facil y organizada la lectura.
 
 La pagina basicamente es una "imitación" de la pagina de la materia. 
-Estos es fuimos al Guithub de guillermo, clonamos y sacamos la carpeta `site_libs`. 
+Estos es fuimos al Github de guillermo, clonamos y sacamos la carpeta `site_libs`. 
 
 ## Archivos del TP
 
@@ -41,16 +43,20 @@ Cada link te lleva al `.nb.html` y de ahi se puede bajar el archivo correspondie
 
 ### LINKS a Consigna y .nb.html
 * Consigna Tp : [Ver PDF](./consigna_tp.pdf)
-* Primera Parte : [Ver](./docs/TP_V2_final.nb.html)
-* [Grafo Frecuencias] : [Ver](./docs/grafo_viajes.nb.html)
+* Primera Parte : [Ver](./TP_V2_final.nb.html)
+* Grafo Frecuencias : [Ver](./grafo_viajes.nb.html)
+* Vuelos en en tiempo : [Ver](./cantidad_vuelos.nb.html)
+* Ley Bernford : [Ver](./ley_ber.nb.html)
 
 ## Datos Usados
 
-* [ANAC](.csv/202109-informe-ministerio.csv)
-* [Codigos y Coordenadas](.csv/sna_abril_2021_fixed_encoding.csv)
-* [csv usado para los grafos](.csv/vuelos_2021.csv)
+* [ANAC](./csv/202109-informe-ministerio.csv)
+* [Codigos y Coordenadas](./csv/sna_abril_2021_fixed_encoding.csv)
+* [csv usado para los grafos](./csv/vuelos_2021.csv)
+* [Datos del 2014 al 2020](https://drive.google.com/file/d/1Ggj_c25Cvv5ZOdofC6P2BKuKz2DTL33W/view?usp=sharing)
 
 
+## Autores:
 
-
-
+* Ezequiel Remus : ezequielremus@gmail.com
+* Matias Cosarinsky: matias.cosarinsky@gmail.com
