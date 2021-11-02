@@ -13,6 +13,8 @@ navbar:
       menu:
       - text: "Ley de Bernford"
         href: ley_ber.html     
+      - text: "Vuelos a travez del tiempo"
+        href: cantidad_vuelos.html
       - text: "Grafo de frecuencias"
         href: grafo_viajes.html     
 

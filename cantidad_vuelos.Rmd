@@ -1,0 +1,282 @@
+---
+title: "TP -  Aeropuertos"
+author: "Grupo 8:  Cosarinsky Matias, Remus Ezequiel"
+date: ""
+output:
+  html_document:
+    df_print: paged
+    toc: yes
+  html_notebook:
+    theme: journal
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+subtitle: "Cantidad de vuelos a lo largo del tiempo"
+---
+<style type="text/css">
+.title {
+  display: none;
+}
+
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+# Cantidad de vuelos a lo largo del tiempo
+
+Veamos la cantidad de vuelos a lo largo de los años para ver que tanto decrecieron a partir del comienzo de la pandemia. Para esto creamos un nuevo dataframe que contiene la información de los vuelos del 2021 junto con los de años anteriores. 
+
+Para realizar el análisis vamos a tomar solamente los despegues y los vuelos regulares. Además agregamos una nueva columna con el año que lo podemos extraer a partir de la fecha del vuelo. 
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+vuelos_ant <- read.csv('./csv/datos_14_a_20.csv', sep=';')
+data_2021 <- read.csv('./csv/202109-informe-ministerio.csv', sep=';', encoding = 'UTF-8')
+
+#Construyo un df que contenga los vuelos del 2021 junto con los de años anteriores
+datos_ant <- vuelos_ant %>% 
+  select(Tipo.de.Movimiento, Fecha, Clase.de.Vuelo)
+
+datos_act <- data_2021 %>% 
+  mutate(Clase.de.Vuelo = Clase.de.Vuelo..todos.los.vuelos.) %>% 
+  select(Tipo.de.Movimiento, Fecha, Clase.de.Vuelo)
+
+vuelos_completos <- rbind(datos_ant, datos_act)
+#dim(datos_ant)[1] + dim(datos_act)[1] == dim(vuelos_completos)[1]
+
+
+#Vamos a tomar despegues y vuelos regulares
+unique(vuelos_completos$Tipo.de.Movimiento) 
+unique(vuelos_completos$Clase.de.Vuelo)
+#algunos estan mal anotados como 'Despegue  ', los corrijo
+vuelos_completos.desp <- vuelos_completos %>% 
+  mutate(Tipo.de.Movimiento = ifelse(Tipo.de.Movimiento=='Despegue  ',
+                                    'Despegue',Tipo.de.Movimiento),
+         Clase.de.Vuelo = ifelse(Clase.de.Vuelo=='Regular                             ','Regular',Clase.de.Vuelo)) %>% 
+  filter(Tipo.de.Movimiento=='Despegue', Clase.de.Vuelo=='Regular')
+
+
+#Calculo el año de cada vuelo para poder agruparlos
+vuelos_completos.desp <- vuelos_completos.desp %>% 
+  #el 3er elemento en fecha contiene el año
+  mutate(Year=sapply(strsplit(Fecha, split='/'), function(x) x[[3]]))
+
+#Agrupo los vuelos a partir del año (no tomo 2021, los meses estan incompletos)
+vuelos.by.year <- vuelos_completos.desp %>% filter(Year != 2021) %>% 
+  group_by(Year) %>% summarise(count=n())
+
+ggplot(vuelos.by.year, mapping=aes(x=Year,y=count, group=2)) + 
+  geom_smooth(col='black', size=1.1) +
+  geom_bar(stat='identity', fill='blue', alpha=.5) +
+  labs(x='Años', y='Cantidad de vuelos', title='Vuelos por año') +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  ylim(c(0, 2.0e5))
+  
+```
+
+Para esta primera visualización no consideramos los datos del 2021 ya que obviamente no tenemos los meses completos. No obstante se puede ver que la cantidad de vuelos en el 2020 fue muy reducida respecto a años anteriores. También puede apreciarse una baja en la actividad en el 2015 la cual se fue incrementando en los años siguientes.
+
+Ahora agreguemos otra nueva columna pero con los meses. A partir de esto vemos la cantidad de vuelos por mes a lo largo de los últimos 8 años.
+
+```{r}
+#Agrego columna con los meses
+vuelos_completos.desp <- vuelos_completos.desp %>% 
+  mutate(Month=sapply(strsplit(Fecha, split='/'), function(x) x[[2]]))
+
+unique(vuelos_completos.desp$Month)
+#Algunos fueron anotados como '1' en lugar de '01', '2' en vez de '02'...etc
+#quiero los nombres de los meses en vez del numero correspondiente
+meses <- c('Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre')
+vuelos_completos.desp <- vuelos_completos.desp %>% 
+  mutate(Month = case_when(Month == '01' ~ meses[1],
+                           Month == '02' ~ meses[2],
+                           Month == '03' ~ meses[3],
+                           Month == '04' ~ meses[4],
+                           Month == '05' ~ meses[5],
+                           Month == '06' ~ meses[6],
+                           Month == '07' ~ meses[7],
+                           Month == '08' ~ meses[8],
+                           Month == '09' ~ meses[9],
+                           Month == '10' ~ meses[10],
+                           Month == '11' ~ meses[11],
+                           Month == '12' ~ meses[12],
+                           #ahora los que tenian otra notacion
+                           Month == '1' ~ meses[1],
+                           Month == '2' ~ meses[2],
+                           Month == '3' ~ meses[3],
+                           Month == '4' ~ meses[4],
+                           Month == '5' ~ meses[5],
+                           Month == '6' ~ meses[6],
+                           Month == '7' ~ meses[7],
+                           Month == '8' ~ meses[8],
+                           Month == '9' ~ meses[9]))
+
+unique(vuelos_completos.desp$Month)
+
+
+#Creo una lista donde voy a guardar la cantidad de vuelos por mes a lo largo de los años
+graficos <- list()
+i <- 1
+for(mes in meses) {
+  grafico_mes <- filter(vuelos_completos.desp, Month==mes) %>% 
+    group_by(Year) %>% summarise(count=n()) %>% 
+    ggplot(vuelos.by.year, mapping=aes(x=Year,y=count, group=2)) + 
+      geom_smooth(col='black', size=1.1, se=F) +
+      geom_bar(stat='identity', fill='blue', alpha=.5) +
+      labs(x='Años', y='Cantidad de vuelos', title=mes) +
+      theme(plot.title = element_text(hjust = 0.5)) +
+      ylim(c(0, 18000))
+  
+  graficos[[i]] <- grafico_mes
+  i <- i+1
+}
+
+
+```
+
+La libreria `gridExtra` permite agrupar los graficos, sin embargo, es necesario cambiar las dimensiones para que puedan entrar todos los graficos juntos.
+
+```{r plot_phenotype, echo = FALSE, fig.height=14, fig.width=8.5}
+library(gridExtra)
+#?grid.arrange()
+
+grid.arrange(grobs=graficos, nrow=6, ncol=2)
+```
+Se puede observar como a partir del comienzo de la pandemia decrece drásticamente la cantidad de vuelos. Enero y febrero del 2020, los 2 meses antes del inicio de esta, tuvieron muchos más vuelos respecto a los que se veían observando en estos 2 meses años anteriores.
+
+A partir de diciembre del 2020 la cantidad de vuelos vuelve a crecer poco a poco. Pero todavía son muy pocos respecto a los que eran antes de la pandemia.
+
+Veamos más en detalle que sucedió a lo largo del 2020:
+
+```{r}
+vuelos_2020 <- filter(vuelos_completos.desp, Year==2020) %>% 
+  group_by(Month) %>% summarise(count=n()) 
+  
+#los meses aparecen desordenados en vuelos_2020, los ordeno a partir del vector de meses que ya tengo construido
+vuelos_2020$Month <- factor(vuelos_2020$Month, levels=meses)
+
+#ahora reordeno los meses en el data frame
+vuelos_2020 <- vuelos_2020[order(vuelos_2020$Month), ]
+
+ggplot(vuelos_2020, mapping=aes(x=Month, y=count, group=2)) +
+  geom_smooth(col='black', size=1.1, se=F) +
+  geom_bar(stat='identity', fill='blue', alpha=.5) +
+  labs(x='Mes', y='Cantidad de vuelos', title='Vuelos a lo largo del 2020') +
+  theme(plot.title = element_text(hjust = 0.5), 
+        axis.text.x = element_text(angle = 90)) +
+  ylim(c(0, 18000))
+  
+vuelos_2020
+mean(vuelos_2020$count[4:9])
+```
+La cantidad de vuelos entre abril y septiembre es prácticamente nula (en promedio unos 180 vuelos), sobretodo si comparamos respecto a otros años. A partir de noviembre o posiblemente mediados de octubre parece volver a aumentar de a poco.
+
+
+Por último veamos como se distribuyó en promedio la cantidad de vuelos por mes a lo largo de los años. Este análisis puede servirnos para tratar de identificar cuando son las temporadas alta y baja.
+
+```{r}
+vuelos.agrupados <- vuelos_completos.desp %>% group_by(Month, Year) %>% 
+  summarise(count=n())
+
+promedio.mes <- c()
+for(m in meses) {
+  #me quedo con mes m en cada iteracion y calculo el promedio del total de vuelos para ese mes a lo   largo de los años
+  promedio.mes <- c(promedio.mes, mean(vuelos.agrupados[vuelos.agrupados$Month==m,]$count))
+}
+summary(promedio.mes)
+
+#comparo respecto al promedio antes de la pandemia
+vuelos.agrupados.ant <- vuelos_completos.desp %>% filter(Year < 2020) %>% 
+  group_by(Month, Year) %>% summarise(count=n())
+
+promedio.mes.ant <- c()
+for(m in meses) {
+  #me quedo con mes m en cada iteracion y calculo el promedio del total de vuelos para ese mes a lo   largo de los años
+  promedio.mes.ant <- c(promedio.mes.ant,
+                        mean(vuelos.agrupados.ant[vuelos.agrupados.ant$Month==m,]$count))
+}
+summary(promedio.mes.ant)
+
+```
+
+Los valores varían al calcular el promedio mirando los datos de todos los años o únicamente los años anteriores a la pandemia, aunque no considerablemente. Aún asi realizamos el analisis de los vuelos por mes con los datos previos al 2020 para obtener un resultado algo más adecuado a lo que se observaría normalmente.
+```{r}
+meses <- factor(meses, levels=meses) #sin agregar esta línea los meses aparecen en otro orden en el gráfico
+
+ggplot(mapping = aes(x=meses, y=promedio.mes.ant, group=2)) +
+  geom_smooth(col='black', size=1.1, se=F) +
+  geom_bar(stat='identity', fill='blue', alpha=.5) +
+  labs(x='Mes', y='Cantidad de vuelos', title='Promedio de vuelos a lo largo de los meses') +
+  theme(plot.title = element_text(hjust = 0.5), 
+        axis.text.x = element_text(angle = 90)) +
+  ylim(c(0,12800))
+
+
+vuelos.agrupados.ant$Month <- factor(vuelos.agrupados.ant$Month, levels=meses)
+vuelos.agrupados.ant <- vuelos.agrupados.ant[order(vuelos.agrupados.ant$Month),]
+
+ggplot(vuelos.agrupados.ant, mapping = aes(x=Month, y=count, fill=Month)) + 
+  geom_violin(alpha=0.2) +
+  geom_boxplot(outlier.shape=NA) +
+  labs(x='Mes', y='Cantidad de vuelos', title='Vuelos por mes a lo largo de los años')+
+  theme(plot.title=element_text(hjust=0.5),
+         axis.text.x = element_text(angle=90))
+
+           
+```
+Los meses de temporada alta parecen ser principalmente los de julio, agosto, diciembre e incluso octubre. Mientras que la temporada más baja está en febrero, abril, mayo y junio.
+
+No obstante, la cantidad de años que estamos considerando es algo acotada como para poder sacar grandes conclusiones, ya que estamos tomando el promedio para cada mes a partir de unicamente 6 observaciones (los años 2014 a 2019). Si tuviesemos disponibles datos de más años, probablemente el análisis sería algo más robusto. 
+
+En los boxplots podemos ver la variabilidad en la cantidad de vuelos para cada mes y comparando ambos gráficos se ve que la mediana suele estar basrante cerca del promedio.
+
+## Cantidad de pasajeros por avión
+
+Para esta otra parte veamos si encontramos alguna relación entre la cantidad de pasajeros que viajan en un avión y el modelo de dicho avión, buscando determinar cuáles son los aviones más grandes.
+
+```{r}
+#Nos interesa quedarnos unicamente con los vuelos que tienen pasajeros
+dim(data_2021)
+vuelos_con_pasajeros <- data_2021 %>% filter(Pasajeros > 0)
+dim(vuelos_con_pasajeros)
+
+
+#veamos que modelos de avion tenemos
+unique(vuelos_con_pasajeros$Aeronave)
+
+#hay muchos modelos, veamos cuales son los mas frecuentes 
+agrupados <- vuelos_con_pasajeros %>% filter(Aeronave != '0') %>% group_by(Aeronave) %>% summarise(count=n()) %>% arrange(desc(count))
+
+quantile(agrupados$count)
+mas.frecuentes <- agrupados[1:20, 1]
+mas.frecuentes <- unlist(mas.frecuentes$Aeronave)
+
+#ahora nos quedamos con los vuelos con modelo de avion entre los mas frecuentes
+vuelos_frecuentes <- vuelos_con_pasajeros %>% filter(Aeronave %in% mas.frecuentes) %>% 
+  select(Aeronave, Pasajeros) %>% arrange(Pasajeros)
+
+arrange(vuelos_frecuentes, desc(Pasajeros))
+
+ggplot(vuelos_frecuentes, 
+       mapping=aes(x=reorder(Aeronave, Pasajeros), y=Pasajeros, fill=Aeronave)) +
+  geom_boxplot(show.legend=F) +
+  labs(x='Modelo', y='Cantidad de pasajeros', 
+       title='Distribución de pasajeros en modelos más frecuentes') + 
+  theme(plot.title = element_text(hjust = 0.5), 
+        axis.text.x = element_text(angle = 90)) +
+  ylim(c(0, 200))
+
+```
+Vemos que los aviones de la serie Boeing 737 son los más utilizados y suelen llevar en su mayoría la mayor cantidad de pasajeros. No obstante el A320 es el que tuvo la máxima cantidad de pasajeros si nos fijamos en los outliers (alrededor de 180 pero en pocas ocasiones). 
+
+Por otro lado los Embraer ERJ y los Learjet también son muy utilizados pero llevan una cantidad mucho más reducida de pasajeros, lo que nos hace pensar que son más pequeños. De hecho los Learjet son jets probablemente utilizados en vuelos privados (por esto tienen por debajo de 25 pasajeros).
